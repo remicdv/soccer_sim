@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="ParameterPreset" id="{2cdd62c4-0e9c-42fd-aca1-8137196d412e}">
+        <property name="name">
+            <value>CrowdExcitation</value>
+        </property>
+        <relationship name="folder">
+            <destination>{63b5b2a9-1355-4ca2-8615-6255819a8532}</destination>
+        </relationship>
+        <relationship name="parameter">
+            <destination>{2d9cc3ae-9d6c-4f79-b52a-84ee2be5c08e}</destination>
+        </relationship>
+    </object>
+    <object class="GameParameter" id="{2d9cc3ae-9d6c-4f79-b52a-84ee2be5c08e}">
+        <property name="initialValue">
+            <value>0</value>
+        </property>
+        <property name="seekSpeed">
+            <value>5</value>
+        </property>
+        <property name="seekSpeedDescending">
+            <value>5</value>
+        </property>
+    </object>
+</objects>
