@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="EncodableAsset" id="{c43bcc50-2934-4e4a-afad-4759e65e5e32}">
+        <property name="assetPath">
+            <value>Crowd Reactions/</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{4c1a8722-01eb-4800-ab52-c007cb11cec4}</destination>
+        </relationship>
+    </object>
+</objects>
