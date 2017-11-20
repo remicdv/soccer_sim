@@ -142,6 +142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f529ab7c7531b47a03b642900192a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  kickSound: event:/Shoot
+  colisionSound: event:/Player_colision
   switchState: 0
   team: 0
   gameTimer: 0

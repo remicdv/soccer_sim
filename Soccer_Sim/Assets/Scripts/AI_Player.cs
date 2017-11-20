@@ -5,6 +5,11 @@ using StateStuff;
 
 public class AI_Player : MonoBehaviour
 {
+	[FMODUnity.EventRef]
+	public string kickSound;
+
+	[FMODUnity.EventRef]
+	public string colisionSound;
     public bool switchState = false;
     public int team;
     public float gameTimer;
@@ -88,6 +93,16 @@ public class AI_Player : MonoBehaviour
             }*/
         }
     }
+
+	void OnCollisionEnter(Collision col)
+	{
+		if ((col.gameObject.tag == "BlueTeam" || col.gameObject.tag == "RedTeam") && fov.findBall(ball))
+		{
+			FMOD.Studio.EventInstance colision = FMODUnity.RuntimeManager.CreateInstance (colisionSound);
+			colision.start ();
+			colision.release ();
+		}
+	}
 
     private void OnCollisionExit(Collision col)
     {

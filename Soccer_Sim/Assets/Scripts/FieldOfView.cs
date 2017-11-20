@@ -89,4 +89,8 @@ public class FieldOfView : MonoBehaviour
         }
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
+
+	public bool findBall(GameObject ball){
+		return Vector3.Distance (this.transform.position, ball.transform.position) < viewRadius;
+	}
 }
