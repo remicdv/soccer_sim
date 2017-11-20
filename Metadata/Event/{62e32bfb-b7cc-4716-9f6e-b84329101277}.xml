@@ -130,9 +130,15 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{4841a560-987e-4ddd-b97d-15814d04311a}">
+        <property name="volume">
+            <value>10</value>
+        </property>
         <property name="name">
             <value>Background Crowd</value>
         </property>
+        <relationship name="modulators">
+            <destination>{7ae1905c-3241-4298-b1b3-ff30a931f6ab}</destination>
+        </relationship>
         <relationship name="effectChain">
             <destination>{1424e441-9f85-4135-9642-02ca43339983}</destination>
         </relationship>
@@ -232,6 +238,27 @@
     </object>
     <object class="MixerBusPanner" id="{2de182e4-4716-4df8-8911-353d4bd6b55f}"/>
     <object class="MixerBusFader" id="{321c6cc1-7831-4c71-a05f-e69de229f812}"/>
+    <object class="SingleSound" id="{c84588fe-ed42-4267-8029-729ad25b6c66}">
+        <property name="volume">
+            <value>-15.5</value>
+        </property>
+        <relationship name="audioFile">
+            <destination>{e0050a4d-ac5e-4ca2-8ddd-3ac46960a569}</destination>
+        </relationship>
+    </object>
+    <object class="SingleSound" id="{e26bb8d3-e50f-44cb-9aa4-be490790b752}">
+        <property name="volume">
+            <value>10</value>
+        </property>
+        <relationship name="audioFile">
+            <destination>{180eaf48-f980-4134-b1f9-3dde361da2ba}</destination>
+        </relationship>
+    </object>
+    <object class="RandomizerModulator" id="{7ae1905c-3241-4298-b1b3-ff30a931f6ab}">
+        <property name="nameOfPropertyBeingModulated">
+            <value>volume</value>
+        </property>
+    </object>
     <object class="MixerBusEffectChain" id="{1424e441-9f85-4135-9642-02ca43339983}">
         <relationship name="effects">
             <destination>{d0364e71-35e8-416f-bcc8-2d7446317065}</destination>
