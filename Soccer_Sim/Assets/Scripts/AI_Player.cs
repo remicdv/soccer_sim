@@ -11,6 +11,9 @@ public class AI_Player : MonoBehaviour
     [FMODUnity.EventRef]
     public string colisionSound;
 
+    [FMODUnity.EventRef]
+    public string footStep;
+
     public bool switchState = false;
     public int team;
     public float gameTimer;
@@ -30,6 +33,9 @@ public class AI_Player : MonoBehaviour
     public Rigidbody myRigidbody;
     public Vector3 startPos;
     public bool leader;
+    public bool coroutine = false;
+    FMOD.Studio.EventInstance run = new FMOD.Studio.EventInstance();
+
 
     public StateMachine<AI_Player> stateMachine { get; set; }
 
@@ -78,7 +84,23 @@ public class AI_Player : MonoBehaviour
             seconds = 0;
             switchState = !switchState;
         }
-
+        
+        if (leader && (GetComponent<Rigidbody>().velocity.x > 0 || GetComponent<Rigidbody>().velocity.y > 0))
+        {
+            FMOD.Studio.PLAYBACK_STATE playstate;
+            run.getPlaybackState(out playstate);
+            if (playstate == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                Debug.Log("creation");
+                run = FMODUnity.RuntimeManager.CreateInstance(footStep);
+                run.start();
+            }
+        }
+        else
+        {
+            run.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+        
         stateMachine.Update();
     }
 

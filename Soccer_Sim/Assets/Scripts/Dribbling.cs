@@ -185,9 +185,9 @@ public class Dribbling : State<AI_Player>
                 }
                 else
                 {
-                    Vector3 v = new Vector3(_owner.kickDir.x * 1.5f, 0.0f, _owner.kickDir.z * 1.5f);
+                    Vector3 v = new Vector3(_owner.kickDir.x * 1f, 0.0f, _owner.kickDir.z * 1f);
                     _owner.ball.transform.position = _owner.ball.transform.position + v;
-                    _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, _owner.ball.transform.position + v, 1.5f);
+                    _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, _owner.ball.transform.position + v, 1f);
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.red);
                     Debug.Log("Je dribble");
                 }

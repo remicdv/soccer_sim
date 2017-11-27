@@ -24,9 +24,10 @@ MonoBehaviour:
   - {fileID: 114380117516055996}
   - {fileID: 114322453334520370}
   - {fileID: 114768993633199226}
+  - {fileID: 114943852893231036}
   MasterBankRef: {fileID: 114357369548575282}
   StringsBankRef: {fileID: 114849352066963702}
-  stringsBankWriteTime: 636468729891459516
+  stringsBankWriteTime: 636473977801610976
   cacheVersion: 2
 --- !u!114 &114009306761132704
 MonoBehaviour:
@@ -209,11 +210,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: D:\Documents\FMOD Studio\soccer_sim\Build\Desktop\Master Bank.bank
-  lastModified: 636468729891429481
+  lastModified: 636473977801595891
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 4457664
+    Value: 4507712
   Exists: 1
 --- !u!114 &114380117516055996
 MonoBehaviour:
@@ -362,6 +363,21 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 23614
+--- !u!114 &114683168766609424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CrowdExcitation
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &114733732737580068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,7 +441,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114103814889868390}
+  - {fileID: 114683168766609424}
   MinDistance: 0
   MaxDistance: 0
   Length: 204355
@@ -485,12 +501,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: D:\Documents\FMOD Studio\soccer_sim\Build\Desktop\Master Bank.strings.bank
-  lastModified: 636468729891459516
+  lastModified: 636473977801610976
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1148
+    Value: 1182
   Exists: 1
+--- !u!114 &114943852893231036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Run
+  guid: e0ecbf392184ab418021719715840d16
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 3224
 --- !u!114 &114951965506604572
 MonoBehaviour:
   m_ObjectHideFlags: 0

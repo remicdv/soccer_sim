@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kickSound: event:/Shoot
   colisionSound: event:/Player_colision
+  footStep: event:/Run
   switchState: 0
   team: 0
   gameTimer: 0
@@ -149,6 +150,9 @@ MonoBehaviour:
   amIReceiver: 0
   fov: {fileID: 0}
   myRigidbody: {fileID: 0}
+  startPos: {x: 0, y: 0, z: 0}
+  leader: 0
+  coroutine: 0
 --- !u!136 &136446572861084338
 CapsuleCollider:
   m_ObjectHideFlags: 1

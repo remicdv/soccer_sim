@@ -31,12 +31,14 @@ public class ChaseBall : State<AI_Player>
     public override void EnterState(AI_Player _owner)
     {
         Debug.Log("Entering Chasing ball State");
+        _owner.leader = true;
 
     }
 
     public override void ExitState(AI_Player _owner)
     {
         Debug.Log("Exiting Chasing ball State");
+        _owner.leader = false;
     }
 
     public override void UpdateState(AI_Player _owner)
