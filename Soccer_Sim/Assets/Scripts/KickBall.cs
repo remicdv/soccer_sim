@@ -46,13 +46,15 @@ public class KickBall : State<AI_Player>
     {
         if (_owner.isOnBall)
         {
-            Debug.Log(_owner.receiver.transform.position - _owner.transform.position);
+            //Debug.Log(_owner.receiver.transform.position - _owner.transform.position);
 
-            _owner.ball.GetComponent<Rigidbody>().velocity = _owner.kickDir * 200f *Time.deltaTime;
+            _owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(_owner.kickDir.x * 100f, 0.0f, _owner.kickDir.z * 100f);
 
         }
         else
         {
+            //_owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(_owner.kickDir.x * 100f, 0.0f, _owner.kickDir.z * 100f);
+
             _owner.stateMachine.ChangeState(FirstState.Instance);
         }
     }

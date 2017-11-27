@@ -58,7 +58,7 @@ public class ChaseBall : State<AI_Player>
             newRotation.x = 0f;
             newRotation.z = 0f;
             _owner.transform.rotation = Quaternion.Slerp(_owner.transform.rotation, newRotation, Time.deltaTime * 8);*/
-            _owner.ToTheBall();
+            _owner.ToTheBall(30f);
         }
         else
         {

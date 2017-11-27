@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 114146984533566342}
-  - {fileID: 114206963766018096}
+  - {fileID: 114849352066963702}
+  - {fileID: 114357369548575282}
   EditorEvents:
-  - {fileID: 114827432789623026}
-  - {fileID: 114993655577365978}
-  - {fileID: 114200370238374866}
-  - {fileID: 114398377595179668}
-  - {fileID: 114451058030351254}
-  - {fileID: 114469120214035910}
-  - {fileID: 114951965506604572}
-  - {fileID: 114231611509517112}
-  - {fileID: 114957661463050176}
-  MasterBankRef: {fileID: 114206963766018096}
-  StringsBankRef: {fileID: 114146984533566342}
-  stringsBankWriteTime: 636467944126777766
+  - {fileID: 114733732737580068}
+  - {fileID: 114787580132807380}
+  - {fileID: 114011066670570610}
+  - {fileID: 114673983128626864}
+  - {fileID: 114757546867366552}
+  - {fileID: 114449840686591534}
+  - {fileID: 114380117516055996}
+  - {fileID: 114322453334520370}
+  - {fileID: 114768993633199226}
+  MasterBankRef: {fileID: 114357369548575282}
+  StringsBankRef: {fileID: 114849352066963702}
+  stringsBankWriteTime: 636468729891459516
   cacheVersion: 2
 --- !u!114 &114009306761132704
 MonoBehaviour:
@@ -43,7 +43,44 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114011066670570610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Player_colision
+  guid: 5a3e9ca5c07e164a9db8d5650e92a371
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 470
 --- !u!114 &114065904752787650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CrowdExcitation
+  Min: 0
+  Max: 1
+  Default: 0
+--- !u!114 &114103814889868390
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -138,6 +175,68 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 524
+--- !u!114 &114322453334520370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Whistle/One_whistle
+  guid: ccc927a8ffb06447be8335b24c5a82bb
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 879
+--- !u!114 &114357369548575282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Documents\FMOD Studio\soccer_sim\Build\Desktop\Master Bank.bank
+  lastModified: 636468729891429481
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 4457664
+  Exists: 1
+--- !u!114 &114380117516055996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Whistle/One_fast_whistle
+  guid: b5e938e64aeaf940af24c15d142b288a
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 524
 --- !u!114 &114398377595179668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +259,28 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 1774
+--- !u!114 &114449840686591534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Crowd Reactions/Reaction to Goal
+  guid: 9452692f26fdfe46a2dc0ca97799250f
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 28000
 --- !u!114 &114451058030351254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +340,117 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
+--- !u!114 &114673983128626864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Crowd Reactions/Near Miss
+  guid: 7b77d32bb6f72b40be3243787b3e4bbc
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 23614
+--- !u!114 &114733732737580068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Whistle/Three_whistle
+  guid: 10f5c8157c1025429a8c78a8c9413e6a
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2615
+--- !u!114 &114757546867366552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Shoot
+  guid: 7e155e289b9b644b86eefa9eab6d3385
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1724
+--- !u!114 &114768993633199226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Football Crowd
+  guid: fb2be362ccb716479f6eb84329101277
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 114103814889868390}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 204355
+--- !u!114 &114787580132807380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Whistle/Two_whistle
+  guid: 40e5552db3be6843aa434401568e9c2e
+  Banks:
+  - {fileID: 114357369548575282}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1774
 --- !u!114 &114827432789623026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +473,24 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 1724
+--- !u!114 &114849352066963702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Documents\FMOD Studio\soccer_sim\Build\Desktop\Master Bank.strings.bank
+  lastModified: 636468729891459516
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1148
+  Exists: 1
 --- !u!114 &114951965506604572
 MonoBehaviour:
   m_ObjectHideFlags: 0
