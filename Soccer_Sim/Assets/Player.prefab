@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33380233317234026}
   - component: {fileID: 136446572861084338}
   - component: {fileID: 23931568807731984}
-  - component: {fileID: 114001381738304802}
   - component: {fileID: 54826772466829346}
   - component: {fileID: 114510387324661706}
   - component: {fileID: 114371069813253996}
@@ -100,17 +99,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!114 &114001381738304802
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1126046810533134}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b6cc9b4bf19fe34fa2ae47e8b3654ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114371069813253996
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,6 +132,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kickSound: event:/Shoot
   colisionSound: event:/Player_colision
+  footStep: event:/Run
+  switchState: 0
   team: 0
   switchState: 0
   gameTimer: 0
@@ -162,6 +152,9 @@ MonoBehaviour:
   fov: {fileID: 0}
   myRigidbody: {fileID: 0}
   homeRegion: 0
+  startPos: {x: 0, y: 0, z: 0}
+  leader: 0
+  coroutine: 0
 --- !u!136 &136446572861084338
 CapsuleCollider:
   m_ObjectHideFlags: 1

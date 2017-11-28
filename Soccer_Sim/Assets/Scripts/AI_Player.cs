@@ -5,34 +5,40 @@ using StateStuff;
 
 public class AI_Player : MonoBehaviour
 {
-	[FMODUnity.EventRef]
-	public string kickSound;
+    [FMODUnity.EventRef]
+    public string kickSound;
 
-	[FMODUnity.EventRef]
-	public string colisionSound;
+    [FMODUnity.EventRef]
+    public string colisionSound;
 
-	public int team;
+    [FMODUnity.EventRef]
+    public string footStep;
 
-	[HideInInspector] public bool switchState = false;
-    	[HideInInspector] public float gameTimer;
-    	[HideInInspector] public bool isOnBall = false;
-    	[HideInInspector] public int seconds = 0;
-    	[HideInInspector] public float kickForce = 10f;
-    	[HideInInspector] public Vector3 kickDir;
-    	[HideInInspector] public GameObject homeGoal;
-    	[HideInInspector] public GameObject enemyGoal;
-    	[HideInInspector] public Vector3 target;
-    	[HideInInspector] public GameObject[] teammates;
-    	[HideInInspector] public GameObject[] enemies;
-    	[HideInInspector] public GameObject ball;
-    	[HideInInspector] public GameObject receiver;
-    	[HideInInspector] public bool amIReceiver;
-    	[HideInInspector] public FieldOfView fov;
-    	[HideInInspector] public Rigidbody myRigidbody;
-	public int homeRegion;
+    public bool switchState = false;
+    public int team;
+    public float gameTimer;
+    public bool isOnBall = false;
+    public int seconds = 0;
+    public float kickForce = 10f;
+    public Vector3 kickDir;
+    public GameObject homeGoal;
+    public GameObject enemyGoal;
+    public Vector3 target;
+    public GameObject[] teammates;
+    public GameObject[] enemies;
+    public GameObject ball;
+    public GameObject receiver;
+    public bool amIReceiver;
+    public FieldOfView fov;
+    public Rigidbody myRigidbody;
+    public Vector3 startPos;
+    public bool leader;
+    public bool coroutine = false;
+    FMOD.Studio.EventInstance run = new FMOD.Studio.EventInstance();
+    public int homeRegion;
 
 
-	[HideInInspector] public StateMachine<AI_Player> stateMachine { get; set; }
+    public StateMachine<AI_Player> stateMachine { get; set; }
 
     private void Start()
     {
@@ -43,7 +49,9 @@ public class AI_Player : MonoBehaviour
         stateMachine.ChangeState(FirstState.Instance);
         amIReceiver = false;
         gameTimer = Time.time;
-        if(team == 1)
+        startPos = transform.position;
+        leader = false;
+        if (team == 1)
         {
             Renderer rend = GetComponent<Renderer>();
             rend.material.SetColor("_Color", Color.blue);
@@ -76,36 +84,49 @@ public class AI_Player : MonoBehaviour
             seconds = 0;
             switchState = !switchState;
         }
-
+        
+        if (leader && (GetComponent<Rigidbody>().velocity.x > 0 || GetComponent<Rigidbody>().velocity.y > 0))
+        {
+            FMOD.Studio.PLAYBACK_STATE playstate;
+            run.getPlaybackState(out playstate);
+            if (playstate == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                Debug.Log("creation");
+                run = FMODUnity.RuntimeManager.CreateInstance(footStep);
+                run.start();
+            }
+        }
+        else
+        {
+            run.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+        
         stateMachine.Update();
     }
 
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.name == "Ball")
+        {
+            isOnBall = true;
+        }
+
+
+        if ((col.gameObject.tag == "BlueTeam" || col.gameObject.tag == "RedTeam") && fov.findBall(ball))
+        {
+            FMOD.Studio.EventInstance colision = FMODUnity.RuntimeManager.CreateInstance(colisionSound);
+            colision.start();
+            colision.release();
+        }
+
+    }
     void OnCollisionStay(Collision col)
     {
         if (col.gameObject.name == "Ball")
         {
             isOnBall = true;
-            /*GameObject ball = GameObject.Find("Ball");
-
-            Vector3 player_to_ball = ball.transform.position - transform.position;
-            print(player_to_ball.normalized);
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                ball.GetComponent<Rigidbody>().velocity = player_to_ball * 10f;
-            }*/
         }
     }
-
-	void OnCollisionEnter(Collision col)
-	{
-		if ((col.gameObject.tag == "BlueTeam" || col.gameObject.tag == "RedTeam") && fov.findBall(ball))
-		{
-			FMOD.Studio.EventInstance colision = FMODUnity.RuntimeManager.CreateInstance (colisionSound);
-			colision.start ();
-			colision.release ();
-		}
-	}
 
     private void OnCollisionExit(Collision col)
     {
@@ -123,11 +144,32 @@ public class AI_Player : MonoBehaviour
         {
             if (g.transform != transform)
             {
-                if (Vector3.Distance(g.transform.position, transform.position) < dist)
+                AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+                if(a != null)
                 {
-                    dist = Vector3.Distance(g.transform.position, transform.position);
-                    closest = g;
+                    a.fov.FindVisibleInArray(a.enemies);
+                    if (Vector3.Distance(g.transform.position, transform.position) < dist)
+                    {
+                        if (a.fov.visibleTargets.Count == 0)
+                        {
+                            dist = Vector3.Distance(g.transform.position, transform.position);
+                            closest = g;
+                        }
+                        /*else
+                        {
+                            foreach(Transform t in a.fov.visibleTargets)
+                            {
+                                if((t.position.x > homeGoal.transform.position.x && t.position.x < transform.position.x)
+                                    || (t.position.x < homeGoal.transform.position.x && t.position.x > transform.position.x))
+                                {
+                                    dist = Vector3.Distance(g.transform.position, transform.position);
+                                    closest = g;
+                                }
+                            }
+                        }*/
+                    }
                 }
+                
             }
         }
         return closest;
@@ -144,7 +186,7 @@ public class AI_Player : MonoBehaviour
                 if (g != gameObject)
                 {
                     AI_Player t = g.GetComponent("AI_Player") as AI_Player;
-                    if (t!=null)
+                    if (t != null)
                     {
                         if (t.amIReceiver == true)
                         {
@@ -162,7 +204,7 @@ public class AI_Player : MonoBehaviour
 
             }
         }
-        
+
         return chase;
     }
 
@@ -194,13 +236,51 @@ public class AI_Player : MonoBehaviour
         return noise;
     }
 
-    public void ToTheBall()
+    public void ToTheBall(float speed)
     {
-        Vector3 to_ball = (ball.transform.position - transform.position).normalized * 30f;
-        myRigidbody.MovePosition(transform.position + to_ball * Time.deltaTime * 2.0f);
+        Vector3 to_ball = (ball.transform.position - transform.position).normalized * speed;
+        myRigidbody.MovePosition(transform.position + to_ball * Time.deltaTime);
         var newRotation = Quaternion.LookRotation(ball.transform.position - transform.position, Vector3.up);
         newRotation.x = 0f;
         newRotation.z = 0f;
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 8);
+    }
+
+    public AI_Player GetLeader()
+    {
+        AI_Player l = null;
+        foreach (GameObject g in teammates)
+        {
+            AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+            if (a != null)
+            {
+                if (a.leader)
+                {
+                    l = a;
+                    break;
+                }
+            }
+        }
+
+        return l;
+    }
+
+    public float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)
+    {
+        Vector3 perp = Vector3.Cross(fwd, targetDir);
+        float dir = Vector3.Dot(perp, up);
+
+        if (dir > 0f)
+        {
+            return 1f;
+        }
+        else if (dir < 0f)
+        {
+            return -1f;
+        }
+        else
+        {
+            return 0f;
+        }
     }
 }

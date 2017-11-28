@@ -13,9 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: C:\Users\Nairolf\Desktop\soccer_sim\soccer_sim.fspro
-  SourceProjectPathUnformatted: C:\Users\Nairolf\Desktop\soccer_sim\soccer_sim.fspro
-  SourceBankPathUnformatted: C:\Users\Nairolf\Desktop\soccer_sim\Build
+  sourceProjectPath: D:\Documents\FMOD Studio\soccer_sim\soccer_sim.fspro
+  SourceProjectPathUnformatted: D:\Documents\FMOD Studio\soccer_sim\soccer_sim.fspro
+  SourceBankPathUnformatted: D:\Documents\FMOD Studio\soccer_sim\Build
   AutomaticEventLoading: 1
   AutomaticSampleLoading: 0
   ImportType: 0
