@@ -10,25 +10,29 @@ public class AI_Player : MonoBehaviour
 
 	[FMODUnity.EventRef]
 	public string colisionSound;
-    public bool switchState = false;
-    public int team;
-    public float gameTimer;
-    public bool isOnBall = false;
-    public int seconds = 0;
-    public float kickForce = 10f;
-    public Vector3 kickDir;
-    public GameObject homeGoal;
-    public GameObject enemyGoal;
-    public Vector3 target;
-    public GameObject[] teammates;
-    public GameObject[] enemies;
-    public GameObject ball;
-    public GameObject receiver;
-    public bool amIReceiver;
-    public FieldOfView fov;
-    public Rigidbody myRigidbody;
 
-    public StateMachine<AI_Player> stateMachine { get; set; }
+	public int team;
+
+	[HideInInspector] public bool switchState = false;
+    	[HideInInspector] public float gameTimer;
+    	[HideInInspector] public bool isOnBall = false;
+    	[HideInInspector] public int seconds = 0;
+    	[HideInInspector] public float kickForce = 10f;
+    	[HideInInspector] public Vector3 kickDir;
+    	[HideInInspector] public GameObject homeGoal;
+    	[HideInInspector] public GameObject enemyGoal;
+    	[HideInInspector] public Vector3 target;
+    	[HideInInspector] public GameObject[] teammates;
+    	[HideInInspector] public GameObject[] enemies;
+    	[HideInInspector] public GameObject ball;
+    	[HideInInspector] public GameObject receiver;
+    	[HideInInspector] public bool amIReceiver;
+    	[HideInInspector] public FieldOfView fov;
+    	[HideInInspector] public Rigidbody myRigidbody;
+	public int homeRegion;
+
+
+	[HideInInspector] public StateMachine<AI_Player> stateMachine { get; set; }
 
     private void Start()
     {
@@ -59,13 +63,12 @@ public class AI_Player : MonoBehaviour
 
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Time.time > gameTimer + 1)
         {
             gameTimer = Time.time;
             seconds++;
-            Debug.Log(seconds);
         }
 
         if (seconds == 5)
@@ -118,7 +121,6 @@ public class AI_Player : MonoBehaviour
         float dist = 1000f;
         foreach (GameObject g in teammates)
         {
-            Debug.Log(Vector3.Distance(g.transform.position, transform.position));
             if (g.transform != transform)
             {
                 if (Vector3.Distance(g.transform.position, transform.position) < dist)
@@ -195,7 +197,7 @@ public class AI_Player : MonoBehaviour
     public void ToTheBall()
     {
         Vector3 to_ball = (ball.transform.position - transform.position).normalized * 30f;
-        myRigidbody.MovePosition(transform.position + to_ball * Time.deltaTime);
+        myRigidbody.MovePosition(transform.position + to_ball * Time.deltaTime * 2.0f);
         var newRotation = Quaternion.LookRotation(ball.transform.position - transform.position, Vector3.up);
         newRotation.x = 0f;
         newRotation.z = 0f;

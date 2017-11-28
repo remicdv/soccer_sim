@@ -42,6 +42,9 @@ public class FirstState : State<AI_Player>
     {
         Vector3 v = new Vector3(_owner.transform.position.x, _owner.transform.position.y + 5f, _owner.transform.position.z);
         Debug.DrawRay(_owner.transform.position, v - _owner.transform.position, Color.white);
+
+		_owner.transform.position = Vector3.MoveTowards (_owner.transform.position, GameConstants.centers [_owner.homeRegion], 1.0f);
+
         if (_owner.haveToChase())
         {
             _owner.stateMachine.ChangeState(ChaseBall.Instance);
