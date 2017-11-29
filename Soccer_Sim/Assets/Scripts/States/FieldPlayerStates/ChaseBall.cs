@@ -32,6 +32,10 @@ public class ChaseBall : State<AI_Player>
     {
         Debug.Log("Entering Chasing ball State");
         _owner.leader = true;
+        if (_owner.amIReceiver)
+        {
+            _owner.setTeamState(AI_Player.stateTeam.Attack);
+        }
 
     }
 
@@ -39,6 +43,7 @@ public class ChaseBall : State<AI_Player>
     {
         Debug.Log("Exiting Chasing ball State");
         _owner.leader = false;
+        _owner.setTeamState(AI_Player.stateTeam.Defense);
     }
 
     public override void UpdateState(AI_Player _owner)

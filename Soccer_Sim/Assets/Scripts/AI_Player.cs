@@ -14,6 +14,12 @@ public class AI_Player : MonoBehaviour
     [FMODUnity.EventRef]
     public string footStep;
 
+    public enum stateTeam { Defense, Attack }
+    public enum rolePlayer { DG, DD, DCG, DCD, MDF, MCG, MCD, AD, AG, BU}
+
+    public rolePlayer myRole;
+    public stateTeam myTeamState;
+
     public bool switchState = false;
     public int team;
     public float gameTimer;
@@ -26,6 +32,10 @@ public class AI_Player : MonoBehaviour
     public Vector3 target;
     public GameObject[] teammates;
     public GameObject[] enemies;
+    public GameObject myLover;
+
+    public bool iWantTheBall;
+
     public GameObject ball;
     public GameObject receiver;
     public bool amIReceiver;
@@ -51,6 +61,7 @@ public class AI_Player : MonoBehaviour
         gameTimer = Time.time;
         startPos = transform.position;
         leader = false;
+        iWantTheBall = false;
         if (team == 1)
         {
             Renderer rend = GetComponent<Renderer>();
@@ -65,6 +76,7 @@ public class AI_Player : MonoBehaviour
             teammates = GameObject.FindGameObjectsWithTag("RedTeam");
             enemies = GameObject.FindGameObjectsWithTag("BlueTeam");
         }
+        myLover = getMyLover();
 
         receiver = (GameObject)teammates.GetValue(1);
 
@@ -84,23 +96,24 @@ public class AI_Player : MonoBehaviour
             seconds = 0;
             switchState = !switchState;
         }
-        
-//        if (leader && (GetComponent<Rigidbody>().velocity.x > 0 || GetComponent<Rigidbody>().velocity.y > 0))
-//        {
-//            FMOD.Studio.PLAYBACK_STATE playstate;
-//            run.getPlaybackState(out playstate);
-//            if (playstate == FMOD.Studio.PLAYBACK_STATE.STOPPED)
-//            {
-//                Debug.Log("creation");
-//                run = FMODUnity.RuntimeManager.CreateInstance(footStep);
-//                run.start();
-//            }
-//        }
-//        else
-//        {
-//            run.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-//        }
-        
+
+        /* if (leader && (GetComponent<Rigidbody>().velocity.x > 0 || GetComponent<Rigidbody>().velocity.y > 0))
+         {
+             FMOD.Studio.PLAYBACK_STATE playstate;
+             run.getPlaybackState(out playstate);
+             if (playstate == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+             {
+                 Debug.Log("creation");
+                 run = FMODUnity.RuntimeManager.CreateInstance(footStep);
+                 run.start();
+             }
+         }
+         else
+         {
+             run.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+         }*/
+
+        transform.position = new Vector3(transform.position.x, startPos.y, transform.position.z);
         stateMachine.Update();
     }
 
@@ -283,4 +296,120 @@ public class AI_Player : MonoBehaviour
             return 0f;
         }
     }
+
+    public GameObject getEnemyByRole(rolePlayer r)
+    {
+        GameObject leBon = null;
+        foreach(GameObject g in enemies)
+        {
+            AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+            if (a != null)
+            {
+                if (a.myRole == r)
+                {
+                    Debug.Break();
+                    leBon = g;
+                    break;
+                }
+            }
+        }
+        return leBon;
+    }
+
+    public GameObject getMyLover()
+    {
+        GameObject lover = null;
+        switch (myRole)
+        {
+            case rolePlayer.AD:
+                lover = getEnemyByRole(rolePlayer.DCG);
+                break;
+            case rolePlayer.AG:
+                lover = getEnemyByRole(rolePlayer.DD);
+                break;
+            case rolePlayer.BU:
+                lover = getEnemyByRole(rolePlayer.DCD);
+                break;
+            case rolePlayer.MDF:
+                lover = getEnemyByRole(rolePlayer.MCD);
+                break;
+            case rolePlayer.MCD:
+                lover = getEnemyByRole(rolePlayer.DG);
+                break;
+            case rolePlayer.MCG:
+                lover = getEnemyByRole(rolePlayer.MDF);
+                break;
+            case rolePlayer.DD:
+                lover = getEnemyByRole(rolePlayer.AG);
+                break;
+            case rolePlayer.DG:
+                lover = getEnemyByRole(rolePlayer.AD);
+                break;
+            case rolePlayer.DCG:
+                lover = getEnemyByRole(rolePlayer.BU);
+                break;
+            case rolePlayer.DCD:
+                lover = getEnemyByRole(rolePlayer.MCG);
+                break;
+        }
+        return lover;
+    }
+
+    public void setTeamState(stateTeam s)
+    {
+        myTeamState = s;
+        foreach(GameObject g in teammates)
+        {
+            AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+            if (a != null)
+            {
+                a.myTeamState = s;
+            }
+        }
+    }
+    
+    public void setNotReceiver(GameObject[] tabs)
+    {
+        foreach(GameObject g in tabs)
+        {
+            AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+            if( a != null)
+            {
+                a.amIReceiver = false;
+            }
+        }
+    }
+
+    public List<GameObject> getPotentialReceiver()
+    {
+        List<GameObject> potRe = new List<GameObject>();
+        foreach(GameObject g in teammates)
+        {
+            AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+            if(a.iWantTheBall == true)
+            {
+                potRe.Add(g);
+            }
+        }
+        return potRe;
+    }
+
+    public GameObject findReicever(List<GameObject> l)
+    {
+        float dist = 1000f;
+        GameObject rec = null;
+        foreach(GameObject g in l)
+        {
+            if (g.transform != transform)
+            {
+                if (Vector3.Distance(transform.position, g.transform.position) < dist)
+                {
+                    dist = Vector3.Distance(transform.position, g.transform.position);
+                    rec = g;
+                }
+            }
+        }
+        return rec;
+    }
+    
 }
