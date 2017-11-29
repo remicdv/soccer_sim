@@ -45,6 +45,10 @@ public class GoalKeeperChaseBall : State<GoalKeeperScript>
 	public override void UpdateState(GoalKeeperScript _owner)
 	{
 		_owner.ToTheBall (30.0f);
+        if(Vector3.Distance(GameObject.Find("Ball").transform.position, _owner.transform.position) > 50f)
+        {
+            _owner.stateMachine.ChangeState(GoalKeeperFollowBall.Instance);
+        }
 	}
 		
 }

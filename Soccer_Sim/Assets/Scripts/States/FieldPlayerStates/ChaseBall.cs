@@ -37,12 +37,17 @@ public class ChaseBall : State<AI_Player>
             _owner.setTeamState(AI_Player.stateTeam.Attack);
         }
 
+        if (_owner.findClosestTeammate() != null)
+        {
+            _owner.findClosestTeammate().GetComponent<AI_Player>().amITheSupportingPlayer = true;
+            _owner.UpdateSupport(_owner.findClosestTeammate());
+        }
+
     }
 
     public override void ExitState(AI_Player _owner)
     {
         Debug.Log("Exiting Chasing ball State");
-        _owner.leader = false;
         _owner.setTeamState(AI_Player.stateTeam.Defense);
     }
 
@@ -54,6 +59,7 @@ public class ChaseBall : State<AI_Player>
         if (!_owner.haveToChase())
         {
             _owner.stateMachine.ChangeState(FirstState.Instance);
+            _owner.leader = false;
         }
         if (!_owner.isOnBall)
         {

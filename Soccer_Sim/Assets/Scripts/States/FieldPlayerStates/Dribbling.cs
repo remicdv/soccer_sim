@@ -6,6 +6,7 @@ public class Dribbling : State<AI_Player>
     private static Dribbling _instance;
     public bool right;
     public bool dir;
+    public bool tothegoal;
     public int timer;
 
     private Dribbling()
@@ -36,13 +37,18 @@ public class Dribbling : State<AI_Player>
         Debug.Log("Entering Dribbling State");
         //Debug.Log(dot);
         dir = false;
-        _owner.leader = true;
         _owner.ball.GetComponent<Rigidbody>().velocity *= 0.0f;
         _owner.GetComponent<Rigidbody>().velocity *= 0.0f;
         _owner.setTeamState(AI_Player.stateTeam.Attack);
         _owner.setNotReceiver(_owner.enemies);
         timer = 0;
-
+        _owner.receiver = _owner.findClosestTeammate();
+        if (_owner.receiver != null)
+        {
+            _owner.receiver.GetComponent<AI_Player>().amITheSupportingPlayer = true;
+            _owner.UpdateSupport(_owner.receiver);
+        }
+        tothegoal = false;
 
     }
 
@@ -66,7 +72,9 @@ public class Dribbling : State<AI_Player>
     public override void UpdateState(AI_Player _owner)
     {
         timer++;
-        _owner.ToTheBall(30f);
+        if(tothegoal)
+            _owner.ToTheBall(30f);
+
         _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         _owner.fov.FindVisibleInArray(_owner.enemies);
         Vector3 to_ball = (_owner.ball.transform.position - _owner.transform.position).normalized;
@@ -119,9 +127,9 @@ public class Dribbling : State<AI_Player>
                         Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.blue);
                     }
                     Debug.DrawRay(_owner.transform.position, dribbleDir * 10f, Color.red);
-                    //_owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(dribbleDir.x * 50f, 0.0f, dribbleDir.z * 50f);
-                    Vector3 v = new Vector3(dribbleDir.x * 2, 0.0f, dribbleDir.z * 2);
-                    _owner.ball.transform.position = _owner.ball.transform.position + v;
+                    _owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(dribbleDir.x * 50f, 0.0f, dribbleDir.z * 50f);
+                    Vector3 v = new Vector3(dribbleDir.x * 1.5f, 0.0f, dribbleDir.z * 1.5f);
+                    //_owner.ball.transform.position = _owner.ball.transform.position + v;
 
 
                 }
@@ -172,7 +180,8 @@ public class Dribbling : State<AI_Player>
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.blue);
                 }
                 Debug.DrawRay(_owner.transform.position, dribbleDir * 10f, Color.red);
-                Vector3 v = new Vector3(dribbleDir.x * 2, 0.0f, dribbleDir.z * 2);
+                Vector3 v = new Vector3(dribbleDir.x * 1.5f, 0.0f, dribbleDir.z * 1.5f);
+                //_owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(dribbleDir.x * 50f, 0.0f, dribbleDir.z * 50f);
                 _owner.ball.transform.position = _owner.ball.transform.position + v;
             }
             else
@@ -180,9 +189,9 @@ public class Dribbling : State<AI_Player>
                 dir = false;
                 float dToGoal = Vector3.Distance(_owner.enemyGoal.transform.position, _owner.ball.transform.position);
 
-                if (dToGoal < 80f)
+                if (dToGoal < 150f)
                 {
-                    _owner.kickDir += _owner.AddNoiseOnAngle(0, 10);
+                    _owner.kickDir += _owner.AddNoiseOnAngle(0, 30);
                     //_owner.kickDir *= 20f;
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir, Color.black);
                     _owner.amIReceiver = false;
@@ -191,20 +200,17 @@ public class Dribbling : State<AI_Player>
                 }
                 else
                 {
-                    //Vector3 v = new Vector3(_owner.kickDir.x * 1f, 0.0f, _owner.kickDir.z * 1f);
-                    //_owner.ball.transform.position = _owner.ball.transform.position + v;
-                    //_owner.transform.position = Vector3.MoveTowards(_owner.transform.position, _owner.ball.transform.position + v, 1f);
-                    //Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.red);
-                    if(timer > 100)
+                    if (!tothegoal)
                     {
-
-                        _owner.receiver = _owner.findReicever(_owner.getPotentialReceiver());
-                        _owner.kickDir = (_owner.receiver.transform.position - _owner.ball.transform.position).normalized;
-                        Debug.Log("Receiver =====", _owner.receiver);
-                        _owner.stateMachine.ChangeState(KickBall.Instance);
+                        _owner.ToTheGoal();
+                        tothegoal = true;
                     }
-                    _owner.GetComponent<Rigidbody>().velocity *= 0;
-                    _owner.ball.GetComponent<Rigidbody>().velocity *= 0;
+                    Vector3 v = new Vector3(_owner.kickDir.x*50, 0.0f, _owner.kickDir.z*50);
+                    _owner.ball.GetComponent<Rigidbody>().velocity = v;
+                    //_owner.ball.transform.position = _owner.transform.position + v;
+                    _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, _owner.ball.transform.position + v, 1f);
+                    Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.red);
+                    
                     Debug.Log("Je dribble");
                 }
 

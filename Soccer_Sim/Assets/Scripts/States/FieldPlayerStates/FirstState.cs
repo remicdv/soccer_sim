@@ -4,7 +4,8 @@ using StateStuff;
 public class FirstState : State<AI_Player>
 {
     private static FirstState _instance;
-
+    public bool test;
+    public Vector3 pos;
     private FirstState()
     {
         if (_instance != null)
@@ -31,11 +32,25 @@ public class FirstState : State<AI_Player>
     public override void EnterState(AI_Player _owner)
     {
         Debug.Log("Entering First State");
+        if (_owner.GetLeader() != null)
+        {
+            test = true;
+            pos = _owner.getBestSupportingSpot();
+        }
     }
 
     public override void ExitState(AI_Player _owner)
     {
         Debug.Log("Exiting First State");
+        _owner.amITheSupportingPlayer = false;
+        if (_owner.tag == "BlueTeam")
+        {
+            _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+        }
+        else
+        {
+            _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+        }
     }
 
     public override void UpdateState(AI_Player _owner)
@@ -43,7 +58,39 @@ public class FirstState : State<AI_Player>
         Vector3 v = new Vector3(_owner.transform.position.x, _owner.transform.position.y + 5f, _owner.transform.position.z);
         Debug.DrawRay(_owner.transform.position, v - _owner.transform.position, Color.white);
 
-		_owner.transform.position = Vector3.MoveTowards (_owner.transform.position, GameConstants.centers [_owner.homeRegion], 1.0f);
+		//_owner.transform.position = Vector3.MoveTowards (_owner.transform.position, GameConstants.centers [_owner.homeRegion], 1.0f);
+
+        if (_owner.amITheSupportingPlayer)
+        {
+            if (!test)
+            {
+                pos = _owner.getBestSupportingSpot();
+            }
+            _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.cyan);
+            _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, pos, 1f);
+            Debug.DrawLine(pos, new Vector3(pos.x, pos.y + 15, pos.z), Color.blue);
+
+        }
+        else
+        {
+            if (_owner.tag == "BlueTeam")
+            {
+                _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            }
+            else
+            {
+                _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+            }
+
+            if(_owner.myTeamState == AI_Player.stateTeam.Defense)
+            {
+                _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, GameConstants.centers[_owner.homeRegion], 1.0f);
+            }
+            else
+            {
+                _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, GameConstants.centers[_owner.homeRegionAttack], 1.0f);
+            }
+        }
 
         if (_owner.haveToChase())
         {
@@ -64,7 +111,7 @@ public class FirstState : State<AI_Player>
             if (_owner.myLover != null)
             {
                 
-                if ((_owner.myLover.transform.position.x > _owner.enemyGoal.transform.position.x && _owner.myLover.transform.position.x < _owner.ball.transform.position.x)
+               /* if ((_owner.myLover.transform.position.x > _owner.enemyGoal.transform.position.x && _owner.myLover.transform.position.x < _owner.ball.transform.position.x)
                     || (_owner.myLover.transform.position.x < _owner.enemyGoal.transform.position.x && _owner.myLover.transform.position.x > _owner.ball.transform.position.x))
                 {
                     _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, new Vector3(_owner.ball.transform.position.x, _owner.myLover.transform.position.y, _owner.myLover.transform.position.z), 1f);
@@ -72,14 +119,17 @@ public class FirstState : State<AI_Player>
                 else
                 {
                     _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, _owner.myLover.transform.position, 1f);
-                }
+                }*/
                 
             }
-        } else
+            
+        }
+        else
          {
+            
+            Vector3 v_flock;
              //ATTAQUE
-             Vector3 v_flock;
-             switch (_owner.GetLeader().myRole)
+            /* switch (_owner.GetLeader().myRole)
              {
                  case AI_Player.rolePlayer.BU:
                      v_flock = _owner.GetLeader().transform.forward.normalized;
@@ -93,7 +143,7 @@ public class FirstState : State<AI_Player>
                         else
                         {
                             v_flock += Vector3.left;
-                        }*/
+                        }
                         // v_flock = _owner.transform.position + v_flock;
                         v_flock = new Vector3(v_flock.x, 0, v_flock.z);
                          Debug.DrawRay(_owner.transform.position, v_flock*10,Color.black);
@@ -139,7 +189,7 @@ public class FirstState : State<AI_Player>
                      }
                      break;
 
-                    /*case AI_Player.rolePlayer.MCD:
+                    case AI_Player.rolePlayer.MCD:
                         v_flock = _owner.GetLeader().transform.position.normalized;
                         if (_owner.myRole == AI_Player.rolePlayer.MDF || _owner.myRole == AI_Player.rolePlayer.MCG)
                         {
@@ -187,8 +237,10 @@ public class FirstState : State<AI_Player>
                             Debug.DrawRay(_owner.transform.position, v_flock * 10f, Color.black);
                             _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, _owner.transform.position + v_flock, 1f);
                         }
-                        break;*/
-            }
+                        break;
+                 }*/
+
+
         }
     }
 }

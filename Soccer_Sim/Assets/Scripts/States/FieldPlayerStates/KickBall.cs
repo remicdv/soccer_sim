@@ -53,7 +53,7 @@ public class KickBall : State<AI_Player>
         }
         else
         {
-            //_owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(_owner.kickDir.x * 100f, 0.0f, _owner.kickDir.z * 100f);
+            _owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(_owner.kickDir.x * 100f, 0.0f, _owner.kickDir.z * 100f);
 
             _owner.stateMachine.ChangeState(FirstState.Instance);
         }

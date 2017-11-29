@@ -46,6 +46,8 @@ public class AI_Player : MonoBehaviour
     public bool coroutine = false;
     FMOD.Studio.EventInstance run = new FMOD.Studio.EventInstance();
     public int homeRegion;
+    public int homeRegionAttack;
+    public bool amITheSupportingPlayer;
 
 
     public StateMachine<AI_Player> stateMachine { get; set; }
@@ -62,12 +64,14 @@ public class AI_Player : MonoBehaviour
         startPos = transform.position;
         leader = false;
         iWantTheBall = false;
+        amITheSupportingPlayer = false;
         if (team == 1)
         {
             Renderer rend = GetComponent<Renderer>();
             rend.material.SetColor("_Color", Color.blue);
             teammates = GameObject.FindGameObjectsWithTag("BlueTeam");
             enemies = GameObject.FindGameObjectsWithTag("RedTeam");
+            homeRegionAttack = homeRegion + 5;
         }
         else
         {
@@ -75,6 +79,7 @@ public class AI_Player : MonoBehaviour
             rend.material.SetColor("_Color", Color.red);
             teammates = GameObject.FindGameObjectsWithTag("RedTeam");
             enemies = GameObject.FindGameObjectsWithTag("BlueTeam");
+            homeRegionAttack = homeRegion - 5;
         }
         myLover = getMyLover();
 
@@ -122,6 +127,13 @@ public class AI_Player : MonoBehaviour
         if (col.gameObject.name == "Ball")
         {
             isOnBall = true;
+            foreach(GameObject g in teammates)
+            {
+                if(g.GetComponent<AI_Player>() != null)
+                {
+                    g.GetComponent<AI_Player>().amIReceiver = false;
+                }
+            }
         }
 
 
@@ -259,6 +271,17 @@ public class AI_Player : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 8);
     }
 
+    public void ToTheGoal()
+    {
+        var newRotation = Quaternion.LookRotation(enemyGoal.transform.position - transform.position, Vector3.up);
+        newRotation.x = 0f;
+        newRotation.z = 0f;
+        transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, 1);
+        Vector3 v = (enemyGoal.transform.position - transform.position).normalized;
+        v = transform.position + v * 3;
+        ball.transform.position = new Vector3(v.x, ball.transform.position.y, v.z);
+    }
+
     public AI_Player GetLeader()
     {
         AI_Player l = null;
@@ -386,9 +409,13 @@ public class AI_Player : MonoBehaviour
         foreach(GameObject g in teammates)
         {
             AI_Player a = g.GetComponent("AI_Player") as AI_Player;
-            if(a.iWantTheBall == true)
+            if (a != null)
             {
-                potRe.Add(g);
+                if (a.iWantTheBall == true)
+                {
+                    potRe.Add(g);
+                }
+
             }
         }
         return potRe;
@@ -410,6 +437,105 @@ public class AI_Player : MonoBehaviour
             }
         }
         return rec;
+    }
+
+    public void updateScore()
+    {
+        foreach(Vector3 key in GameConstants.centers)
+        {
+            GameConstants.centersDic[key] = 0f;
+        }
+
+        float dist = 0;
+        Vector3 theKey = new Vector3();
+        foreach (Vector3 key in GameConstants.centers)
+        {
+            RaycastHit hit;
+
+            //Can Score
+            Vector3 to_goal = (enemyGoal.transform.position - key).normalized;
+            if (Physics.Raycast(key, to_goal, out hit))
+            {
+                if(hit.collider.gameObject.tag != enemies[0].tag)
+                {
+                    GameConstants.centersDic[key] += 1f;
+                }
+            }
+            if(!Physics.Raycast(key, to_goal))
+            {
+                GameConstants.centersDic[key] += 1f;
+            }
+
+            //Can pass
+            Vector3 to_ball = (ball.transform.position - key).normalized;
+            if (Physics.Raycast(key, to_goal, out hit))
+            {
+                if (hit.collider.gameObject.tag != enemies[0].tag)
+                {
+                    GameConstants.centersDic[key] += 2f;
+                }
+            }
+            if (!Physics.Raycast(key, to_goal))
+            {
+                GameConstants.centersDic[key] += 2f;
+            }
+
+            //Dist
+            if(Vector3.Distance(key, ball.transform.position) > dist && Vector3.Distance(key, ball.transform.position) < 150)
+            {
+                dist = Vector3.Distance(key, ball.transform.position);
+                theKey = key;
+            }
+        }
+        GameConstants.centersDic[theKey] += 2f;
+    }
+
+    public Vector3 getBestSupportingSpot()
+    {
+        updateScore();
+        float score = 0;
+        Vector3 theKey = new Vector3();
+        foreach (Vector3 key in GameConstants.centersDic.Keys)
+        {
+            if(gameObject.tag == "RedTeam")
+            {
+                if(key.x < GameObject.Find("FieldCenter").transform.position.x)
+                {
+                    if (GameConstants.centersDic[key] > score)
+                    {
+                        score = GameConstants.centersDic[key];
+                        theKey = key;
+                    }
+                }
+            }
+            if (gameObject.tag == "BlueTeam")
+            {
+                if (key.x > GameObject.Find("FieldCenter").transform.position.x)
+                {
+                    if (GameConstants.centersDic[key] > score)
+                    {
+                        score = GameConstants.centersDic[key];
+                        theKey = key;
+                    }
+                }
+            }
+
+        }
+        return theKey;
+    }
+
+    public void UpdateSupport(GameObject g)
+    {
+        foreach(GameObject go in teammates)
+        {
+            if(g != go)
+            {
+                if(go.GetComponent<AI_Player>() != null)
+                {
+                    go.GetComponent<AI_Player>().amITheSupportingPlayer = false;
+                }
+            }
+        }
     }
     
 }
