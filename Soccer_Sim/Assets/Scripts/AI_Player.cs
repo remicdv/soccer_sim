@@ -85,21 +85,21 @@ public class AI_Player : MonoBehaviour
             switchState = !switchState;
         }
         
-        if (leader && (GetComponent<Rigidbody>().velocity.x > 0 || GetComponent<Rigidbody>().velocity.y > 0))
-        {
-            FMOD.Studio.PLAYBACK_STATE playstate;
-            run.getPlaybackState(out playstate);
-            if (playstate == FMOD.Studio.PLAYBACK_STATE.STOPPED)
-            {
-                Debug.Log("creation");
-                run = FMODUnity.RuntimeManager.CreateInstance(footStep);
-                run.start();
-            }
-        }
-        else
-        {
-            run.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        }
+//        if (leader && (GetComponent<Rigidbody>().velocity.x > 0 || GetComponent<Rigidbody>().velocity.y > 0))
+//        {
+//            FMOD.Studio.PLAYBACK_STATE playstate;
+//            run.getPlaybackState(out playstate);
+//            if (playstate == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+//            {
+//                Debug.Log("creation");
+//                run = FMODUnity.RuntimeManager.CreateInstance(footStep);
+//                run.start();
+//            }
+//        }
+//        else
+//        {
+//            run.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+//        }
         
         stateMachine.Update();
     }
@@ -112,12 +112,12 @@ public class AI_Player : MonoBehaviour
         }
 
 
-        if ((col.gameObject.tag == "BlueTeam" || col.gameObject.tag == "RedTeam") && fov.findBall(ball))
-        {
-            FMOD.Studio.EventInstance colision = FMODUnity.RuntimeManager.CreateInstance(colisionSound);
-            colision.start();
-            colision.release();
-        }
+//        if ((col.gameObject.tag == "BlueTeam" || col.gameObject.tag == "RedTeam") && fov.findBall(ball))
+//        {
+//            FMOD.Studio.EventInstance colision = FMODUnity.RuntimeManager.CreateInstance(colisionSound);
+//            colision.start();
+//            colision.release();
+//        }
 
     }
     void OnCollisionStay(Collision col)
