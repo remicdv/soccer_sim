@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.01.10.00">
-    <object class="AudioFile" id="{63df1658-7217-4925-a09d-09342b8f5685}">
+    <object class="AudioFile" id="{4bd76965-6cae-476d-8a8b-cc392c1b117d}">
         <property name="assetPath">
-            <value>blanc.wav</value>
-        </property>
-        <property name="isStreaming">
-            <value>true</value>
+            <value>Speakers/Ambiance_est_a_son_comble_03.mp3</value>
         </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
         <property name="channelCount">
-            <value>1</value>
+            <value>2</value>
         </property>
         <property name="length">
-            <value>30</value>
+            <value>2.3771428571428572</value>
         </property>
         <relationship name="masterAssetFolder">
             <destination>{4c1a8722-01eb-4800-ab52-c007cb11cec4}</destination>
