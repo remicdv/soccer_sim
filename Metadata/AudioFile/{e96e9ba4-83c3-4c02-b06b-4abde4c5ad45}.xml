@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{e96e9ba4-83c3-4c02-b06b-4abde4c5ad45}">
+        <property name="assetPath">
+            <value>Speakers/Ambiance_est_a_son_comble_04.mp3</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>2.1942857142857144</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{4c1a8722-01eb-4800-ab52-c007cb11cec4}</destination>
+        </relationship>
+    </object>
+</objects>

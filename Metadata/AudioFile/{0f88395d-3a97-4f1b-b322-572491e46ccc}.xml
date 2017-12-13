@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.01.10.00">
-    <object class="AudioFile" id="{e0050a4d-ac5e-4ca2-8ddd-3ac46960a569}">
+    <object class="AudioFile" id="{0f88395d-3a97-4f1b-b322-572491e46ccc}">
         <property name="assetPath">
-            <value>course_herbe.wav</value>
+            <value>Speakers/Ambiance_est_a_son_comble_02.mp3</value>
         </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
@@ -11,7 +11,7 @@
             <value>2</value>
         </property>
         <property name="length">
-            <value>3.2562585034013605</value>
+            <value>2.27265306122449</value>
         </property>
         <relationship name="masterAssetFolder">
             <destination>{4c1a8722-01eb-4800-ab52-c007cb11cec4}</destination>
