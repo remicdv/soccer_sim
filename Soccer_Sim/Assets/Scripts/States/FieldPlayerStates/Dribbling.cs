@@ -7,7 +7,6 @@ public class Dribbling : State<AI_Player>
     public bool right;
     public bool dir;
     public bool tothegoal;
-    public int timer;
 
     private Dribbling()
     {
@@ -35,18 +34,24 @@ public class Dribbling : State<AI_Player>
     public override void EnterState(AI_Player _owner)
     {
         Debug.Log("Entering Dribbling State");
+        if (_owner.isDribbler())
+        {
+            _owner.stateMachine.ChangeState(FirstState.Instance);
+        }
         //Debug.Log(dot);
         dir = false;
         _owner.ball.GetComponent<Rigidbody>().velocity *= 0.0f;
         _owner.GetComponent<Rigidbody>().velocity *= 0.0f;
         _owner.setTeamState(AI_Player.stateTeam.Attack);
         _owner.setNotReceiver(_owner.enemies);
-        timer = 0;
         _owner.receiver = _owner.findClosestTeammate();
         if (_owner.receiver != null)
         {
-            _owner.receiver.GetComponent<AI_Player>().amITheSupportingPlayer = true;
-            _owner.UpdateSupport(_owner.receiver);
+            if(_owner.findMySupport(_owner.tag == "BlueTeam").GetComponent<AI_Player>() != null)
+            {
+                _owner.findMySupport(_owner.tag == "BlueTeam").GetComponent<AI_Player>().amITheSupportingPlayer = true;
+                _owner.UpdateSupport(_owner.receiver);
+            }
         }
         tothegoal = false;
 
@@ -71,18 +76,60 @@ public class Dribbling : State<AI_Player>
 
     public override void UpdateState(AI_Player _owner)
     {
-        timer++;
-        if(tothegoal)
-            _owner.ToTheBall(30f);
 
-        _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+        _owner.setTeamState(AI_Player.stateTeam.Attack);
+        _owner.leader = true;
+        _owner.setNotReceiver(_owner.enemies);
+        if (tothegoal)
+        {
+            _owner.ToTheBall(30f);
+            if(_owner.team == 1)
+            {
+                    if (_owner.canIShoot())
+                    {
+                        _owner.kickDir = (_owner.enemyGoal.transform.position - _owner.ball.transform.position).normalized;
+                        _owner.kickDir += _owner.AddNoiseOnAngle(0, 15);
+                        _owner.kickDir = _owner.kickDir.normalized;
+                        //_owner.kickDir *= 30f;
+                        _owner.amIReceiver = false;
+                        _owner.stateMachine.ChangeState(KickBall.Instance);
+                    }
+            }
+        }
+
+
+        //_owner.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         _owner.fov.FindVisibleInArray(_owner.enemies);
+        
+        bool control = false;
+        if (_owner.team == 2)
+        {
+            if (Vector3.Distance(_owner.enemyGoal.transform.position, _owner.transform.position) > 300 || _owner.fov.visibleTargets.Count != 0)
+            {
+                control = true;
+            }
+        }
+        else
+        {
+            if(_owner.fov.visibleTargets.Count != 0)
+            {
+                control = true;
+            }
+        }
+
         Vector3 to_ball = (_owner.ball.transform.position - _owner.transform.position).normalized;
         double dot = 0;
-        if (_owner.fov.visibleTargets.Count != 0)
+        if (control)
         {
             //Debug.Log(_owner.teammates);
-            _owner.receiver = _owner.findClosestTeammate();
+            if(_owner.team == 1)
+            {
+                _owner.receiver = _owner.findBestTeammateKick();
+            }
+            else
+            {
+                _owner.receiver = _owner.findBestTeammateControl();
+            }
 
             if (_owner.receiver != null)
             {
@@ -137,10 +184,18 @@ public class Dribbling : State<AI_Player>
                 {
                     dir = false;
                     AI_Player a = _owner.receiver.GetComponent("AI_Player") as AI_Player;
-                    a.amIReceiver = true;
-                    _owner.amIReceiver = false;
-                    _owner.stateMachine.ChangeState(KickBall.Instance);
+                    if(a != null)
+                    {
+                        a.amIReceiver = true;
+                        _owner.amIReceiver = false;
+                        _owner.stateMachine.ChangeState(KickBall.Instance);
+
+                    }
                 }
+            }
+            else
+            {
+                Debug.Log("null "+_owner.team);
             }
         }
         else
@@ -181,22 +236,30 @@ public class Dribbling : State<AI_Player>
                 }
                 Debug.DrawRay(_owner.transform.position, dribbleDir * 10f, Color.red);
                 Vector3 v = new Vector3(dribbleDir.x * 1.5f, 0.0f, dribbleDir.z * 1.5f);
-                //_owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(dribbleDir.x * 50f, 0.0f, dribbleDir.z * 50f);
-                _owner.ball.transform.position = _owner.ball.transform.position + v;
+                _owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(dribbleDir.x * 50f, 0.0f, dribbleDir.z * 50f);
+                //_owner.ball.transform.position = _owner.ball.transform.position + v;
             }
             else
             {
                 dir = false;
                 float dToGoal = Vector3.Distance(_owner.enemyGoal.transform.position, _owner.ball.transform.position);
-
-                if (dToGoal < 150f)
+                float distBlue;
+                if(_owner.team == 1)
                 {
-                    _owner.kickDir += _owner.AddNoiseOnAngle(0, 30);
-                    //_owner.kickDir *= 20f;
+                    distBlue = 250f;
+                }
+                else
+                {
+                    distBlue = 150f;
+                }
+                if (dToGoal < distBlue)
+                {
+                    _owner.kickDir += _owner.AddNoiseOnAngle(-5, 10);
+                    //_owner.kickDir = _owner.kickDir.normalized;
+                    _owner.kickDir *= 1.1f;
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir, Color.black);
                     _owner.amIReceiver = false;
                     _owner.stateMachine.ChangeState(KickBall.Instance);
-                    Debug.Log("Distance au but " + dToGoal);
                 }
                 else
                 {

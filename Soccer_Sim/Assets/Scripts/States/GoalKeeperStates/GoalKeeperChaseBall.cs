@@ -45,10 +45,18 @@ public class GoalKeeperChaseBall : State<GoalKeeperScript>
 	public override void UpdateState(GoalKeeperScript _owner)
 	{
 		_owner.ToTheBall (30.0f);
-        if(Vector3.Distance(GameObject.Find("Ball").transform.position, _owner.transform.position) > 50f)
+        if(Vector3.Distance(GameObject.Find("Ball").transform.position, _owner.transform.position) > 50f ||
+            Vector3.Distance(_owner.transform.position, _owner.homeGoal.transform.position) < 30f)
         {
             _owner.stateMachine.ChangeState(GoalKeeperFollowBall.Instance);
         }
-	}
+        if (Vector3.Distance(_owner.ball.transform.position, _owner.transform.position) < 10f)
+        {
+            Vector3 kickDir = (_owner.enemyGoal.transform.position - _owner.ball.transform.position).normalized;
+            //kickDir = _owner.AddNoiseOnAngle(0, 15f);
+            _owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(kickDir.x * 150f, 0.0f, kickDir.z * 150f);
+            _owner.stateMachine.ChangeState(GoalKeeperFollowBall.Instance);
+        }
+    }
 		
 }

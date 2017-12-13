@@ -44,5 +44,10 @@ public class GoalKeeperFollowBall : State<GoalKeeperScript> {
 	public override void UpdateState(GoalKeeperScript _owner)
 	{
 		_owner.FollowBall ();
-	}
+
+        if (_owner.fov.findBall(_owner.ball))
+        {
+            _owner.stateMachine.ChangeState(GoalKeeperChaseBall.Instance);
+        }
+    }
 }

@@ -39,8 +39,12 @@ public class ChaseBall : State<AI_Player>
 
         if (_owner.findClosestTeammate() != null)
         {
-            _owner.findClosestTeammate().GetComponent<AI_Player>().amITheSupportingPlayer = true;
-            _owner.UpdateSupport(_owner.findClosestTeammate());
+            AI_Player a = _owner.findClosestTeammate().GetComponent("AI_Player") as AI_Player;
+            if(a != null)
+            {
+                _owner.findClosestTeammate().GetComponent<AI_Player>().amITheSupportingPlayer = true;
+                _owner.UpdateSupport(_owner.findClosestTeammate());
+            }
         }
 
     }
@@ -53,8 +57,30 @@ public class ChaseBall : State<AI_Player>
 
     public override void UpdateState(AI_Player _owner)
     {
-        
-        
+        bool t = false;
+        if(_owner.team == 1)
+        {
+            if(_owner.ball.transform.position.x > 40)
+            {
+                t = true;
+            }
+        }
+        else
+        {
+            if (_owner.ball.transform.position.x < -40)
+            {
+                t = true;
+            }
+        }
+        if (!_owner.amIReceiver && !t)
+        {
+            _owner.setTeamState(AI_Player.stateTeam.Defense);
+        }
+        else
+        {
+            _owner.setTeamState(AI_Player.stateTeam.Attack);
+        }
+
         //Debug.DrawRay(_owner.transform.position, _owner.transform.forward- _owner.transform.position, Color.red);
         if (!_owner.haveToChase())
         {

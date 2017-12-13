@@ -35,6 +35,7 @@ public class AI_Player : MonoBehaviour
     public GameObject myLover;
 
     public bool iWantTheBall;
+    public bool ready;
 
     public GameObject ball;
     public GameObject receiver;
@@ -47,6 +48,7 @@ public class AI_Player : MonoBehaviour
     FMOD.Studio.EventInstance run = new FMOD.Studio.EventInstance();
     public int homeRegion;
     public int homeRegionAttack;
+    public int previousAttack;
     public bool amITheSupportingPlayer;
 
 
@@ -54,11 +56,13 @@ public class AI_Player : MonoBehaviour
 
     private void Start()
     {
+
+        ready = false;
         myRigidbody = GetComponent<Rigidbody>();
         fov = gameObject.GetComponent("FieldOfView") as FieldOfView;
         ball = GameObject.Find("Ball");
         stateMachine = new StateMachine<AI_Player>(this);
-        stateMachine.ChangeState(FirstState.Instance);
+        stateMachine.ChangeState(BeginState.Instance);
         amIReceiver = false;
         gameTimer = Time.time;
         startPos = transform.position;
@@ -72,6 +76,7 @@ public class AI_Player : MonoBehaviour
             teammates = GameObject.FindGameObjectsWithTag("BlueTeam");
             enemies = GameObject.FindGameObjectsWithTag("RedTeam");
             homeRegionAttack = homeRegion + 5;
+            previousAttack = homeRegionAttack;
         }
         else
         {
@@ -79,7 +84,8 @@ public class AI_Player : MonoBehaviour
             rend.material.SetColor("_Color", Color.red);
             teammates = GameObject.FindGameObjectsWithTag("RedTeam");
             enemies = GameObject.FindGameObjectsWithTag("BlueTeam");
-            homeRegionAttack = homeRegion - 5;
+            homeRegionAttack = homeRegion - 7;
+            previousAttack = homeRegionAttack;
         }
         myLover = getMyLover();
 
@@ -88,19 +94,11 @@ public class AI_Player : MonoBehaviour
 
     }
 
+
     private void FixedUpdate()
     {
-        if (Time.time > gameTimer + 1)
-        {
-            gameTimer = Time.time;
-            seconds++;
-        }
 
-        if (seconds == 5)
-        {
-            seconds = 0;
-            switchState = !switchState;
-        }
+       
 
         /* if (leader && (GetComponent<Rigidbody>().velocity.x > 0 || GetComponent<Rigidbody>().velocity.y > 0))
          {
@@ -120,6 +118,27 @@ public class AI_Player : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, startPos.y, transform.position.z);
         stateMachine.Update();
+
+       /* if(GetLeader() != null && GetBU() != null && myTeamState == stateTeam.Attack)
+        {
+            
+            if (team == 1)
+            {
+                if (GetLeader().transform.position.z > GameConstants.centers[GetBU().GetComponent<AI_Player>().previousAttack].z)
+                    homeRegionAttack = homeRegion + 3;
+            }
+            else
+            {
+                if (GetLeader().transform.position.z < GameConstants.centers[GetBU().GetComponent<AI_Player>().previousAttack].z)
+                    homeRegionAttack = homeRegion - 3;
+            }
+        }
+        else
+        {
+            homeRegionAttack = previousAttack;
+        }*/
+        
+           
     }
 
     void OnCollisionEnter(Collision col)
@@ -150,6 +169,7 @@ public class AI_Player : MonoBehaviour
         if (col.gameObject.name == "Ball")
         {
             isOnBall = true;
+            stateMachine.ChangeState(Dribbling.Instance);
         }
     }
 
@@ -160,6 +180,49 @@ public class AI_Player : MonoBehaviour
             isOnBall = false;
         }
     }
+    
+
+    public GameObject findMySupport(bool blue)
+    {
+        GameObject candidat = null;
+        float dist = 1000f;
+        float x = transform.position.x;
+        float x_goal = enemyGoal.transform.position.x;
+        foreach (GameObject g in teammates)
+        {
+            if (g.transform != transform)
+            {
+                if (blue)
+                {
+                    if(g.transform.position.x > x)
+                    {
+                        if (Vector3.Distance(g.transform.position, transform.position) < dist)
+                        {
+                            dist = Vector3.Distance(g.transform.position, transform.position);
+                            candidat = g;
+                        }
+                    }
+                }
+                else
+                {
+                    if (g.transform.position.x < x)
+                    {
+                        if (Vector3.Distance(g.transform.position, transform.position) < dist)
+                        {
+                            dist = Vector3.Distance(g.transform.position, transform.position);
+                            candidat = g;
+                        }
+                    }
+                }
+
+            }
+        }
+        if(candidat == null)
+        {
+            candidat = findClosestTeammate();
+        }
+        return candidat;
+    }
 
     public GameObject findClosestTeammate()
     {
@@ -169,35 +232,129 @@ public class AI_Player : MonoBehaviour
         {
             if (g.transform != transform)
             {
-                AI_Player a = g.GetComponent("AI_Player") as AI_Player;
-                if(a != null)
+                if(Vector3.Distance(g.transform.position, transform.position) < dist)
                 {
-                    a.fov.FindVisibleInArray(a.enemies);
-                    if (Vector3.Distance(g.transform.position, transform.position) < dist)
-                    {
-                        if (a.fov.visibleTargets.Count == 0)
-                        {
-                            dist = Vector3.Distance(g.transform.position, transform.position);
-                            closest = g;
-                        }
-                        /*else
-                        {
-                            foreach(Transform t in a.fov.visibleTargets)
-                            {
-                                if((t.position.x > homeGoal.transform.position.x && t.position.x < transform.position.x)
-                                    || (t.position.x < homeGoal.transform.position.x && t.position.x > transform.position.x))
-                                {
-                                    dist = Vector3.Distance(g.transform.position, transform.position);
-                                    closest = g;
-                                }
-                            }
-                        }*/
-                    }
+                    dist = Vector3.Distance(g.transform.position, transform.position);
+                    closest = g;
                 }
-                
             }
         }
         return closest;
+
+    }
+
+    public GameObject findBestTeammateKick()
+    {
+        GameObject closest = null;
+        float dist = 1000f;
+        foreach (GameObject g in teammates)
+        {
+            if (g.transform != transform)
+            {
+                if(g.transform.position.x >= transform.position.x)
+                {
+                    AI_Player a = g.GetComponent<AI_Player>();
+                    if (a != null)
+                    {
+                        if (a.canIShoot() && canIPass(a.gameObject))
+                        {
+                            closest = g;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if(closest == null)
+        {
+            closest = findClosestTeammate();
+        }
+        return closest;
+    }
+
+    public GameObject findBestTeammateControl()
+    {
+        /*AI_Player a = GetMySupportingPlayer();
+        if (a != null)
+        {
+            Vector3 v1 = new Vector3(a.transform.position.x, 0.0f, a.transform.position.z);
+            Vector3 v2 = new Vector3(a.getGoodPos(GetLeader()).x, 0.0f, a.getGoodPos(GetLeader()).z);
+            if (Vector3.Distance(v1, v2) < 15)
+            {
+                if (canIPass(a.gameObject))
+                {
+                    closest = a.gameObject;
+                }
+            }
+        }
+        if(closest == null)
+        {
+
+            float dist = 1000f;
+            foreach (GameObject g in teammates)
+            {
+                if (g.transform != transform)
+                {
+                    AI_Player a1 = g.GetComponent("AI_Player") as AI_Player;
+                    if (a1 != null)
+                    {
+                        a1.fov.FindVisibleInArray(a1.enemies);
+                        if (Vector3.Distance(g.transform.position, transform.position) < dist)
+                        {
+                            if (a1.fov.visibleTargets.Count == 0)
+                            {
+                                dist = Vector3.Distance(g.transform.position, transform.position);
+                                closest = g;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }*/
+
+        List<GameObject> passing = new List<GameObject>();
+        GameObject passingfree = null;
+        int i = 0;
+        foreach(GameObject g in teammates)
+        {
+            if (g.transform != transform)
+            {
+                AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+                if (a != null)
+                {
+                    if (canIPass(g))
+                    {
+                        passing.Add(g);
+                        i++;
+                    }
+                }
+            }
+        }
+        if(passing != null)
+        {
+            int count = 15;
+            foreach(GameObject g in passing)
+            {
+                if (g.transform != transform)
+                {
+                    AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+                    if (a != null) {
+                        a.fov.FindTargetsInArray(a.enemies);
+                        if(a.fov.visibleTargets.Count < count)
+                        {
+                            passingfree = g;
+                            count = a.fov.visibleTargets.Count;
+                        }
+                    }
+                }
+            }
+        }
+        if(passingfree == null)
+        {
+            passingfree = findClosestTeammate();
+        }
+        return passingfree;
     }
 
     public bool haveToChase()
@@ -218,12 +375,12 @@ public class AI_Player : MonoBehaviour
                             chase = false;
                             break;
                         }
-                    }
-                    float d2 = Vector3.Distance(g.transform.position, ball.transform.position);
-                    if (d2 < d1)
-                    {
-                        chase = false;
-                        break;
+                        float d2 = Vector3.Distance(g.transform.position, ball.transform.position);
+                        if (d2 < d1)
+                        {
+                            chase = false;
+                            break;
+                        }
                     }
                 }
 
@@ -258,13 +415,23 @@ public class AI_Player : MonoBehaviour
           Mathf.Sin(2 * Mathf.PI * yNoise / 360),
           Mathf.Sin(2 * Mathf.PI * zNoise / 360)
         );
-        return noise;
+        return noise.normalized;
     }
 
     public void ToTheBall(float speed)
     {
+        float friction = ball.GetComponent<SphereCollider>().material.dynamicFriction;
+        //Vector3 futurPos = ball.GetComponent<Rigidbody>().velocity * Time.deltaTime + ((1/2) * friction * Time.deltaTime*Time.deltaTime);
         Vector3 to_ball = (ball.transform.position - transform.position).normalized * speed;
         myRigidbody.MovePosition(transform.position + to_ball * Time.deltaTime);
+        var newRotation = Quaternion.LookRotation(ball.transform.position - transform.position, Vector3.up);
+        newRotation.x = 0f;
+        newRotation.z = 0f;
+        transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 8);
+    }
+
+    public void RotateTheBall()
+    {
         var newRotation = Quaternion.LookRotation(ball.transform.position - transform.position, Vector3.up);
         newRotation.x = 0f;
         newRotation.z = 0f;
@@ -277,8 +444,10 @@ public class AI_Player : MonoBehaviour
         newRotation.x = 0f;
         newRotation.z = 0f;
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, 1);
+        Debug.DrawRay(transform.position, transform.forward * 20f, Color.magenta);
+        //Debug.Break();
         Vector3 v = (enemyGoal.transform.position - transform.position).normalized;
-        v = transform.position + v * 3;
+        v = transform.position + transform.forward * 4f;
         ball.transform.position = new Vector3(v.x, ball.transform.position.y, v.z);
     }
 
@@ -301,6 +470,46 @@ public class AI_Player : MonoBehaviour
         return l;
     }
 
+    public AI_Player GetMySupportingPlayer()
+    {
+        AI_Player l = null;
+        foreach (GameObject g in teammates)
+        {
+            AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+            if (a != null)
+            {
+                if (a.amITheSupportingPlayer)
+                {
+                    l = a;
+                    break;
+                }
+            }
+        }
+
+        return l;
+    }
+    public bool isDribbler()
+    {
+        bool t = false; ;
+
+        foreach (GameObject p in teammates)
+        {
+            if(p.transform != transform)
+            {
+                AI_Player a = p.GetComponent("AI_Player") as AI_Player;
+                if (a != null)
+                {
+                    if (a.stateMachine.currentState == Dribbling.Instance)
+                    {
+                        t = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return t;
+
+    }
     public float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)
     {
         Vector3 perp = Vector3.Cross(fwd, targetDir);
@@ -330,7 +539,6 @@ public class AI_Player : MonoBehaviour
             {
                 if (a.myRole == r)
                 {
-                    Debug.Break();
                     leBon = g;
                     break;
                 }
@@ -376,6 +584,24 @@ public class AI_Player : MonoBehaviour
                 break;
         }
         return lover;
+    }
+
+    public GameObject GetBU()
+    {
+        GameObject bu = null;
+        foreach(GameObject g in teammates)
+        {
+            AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+            if (a != null)
+            {
+                if(a.myRole == rolePlayer.BU)
+                {
+                    bu = a.gameObject;
+                    break;
+                }
+            }
+        }
+        return bu;
     }
 
     public void setTeamState(stateTeam s)
@@ -439,6 +665,40 @@ public class AI_Player : MonoBehaviour
         return rec;
     }
 
+    public bool canIShoot()
+    {
+        RaycastHit hit;
+        bool yes = false;
+        Vector3 to_goal = (enemyGoal.transform.position - transform.position).normalized;
+        if (Physics.Raycast(transform.position, to_goal, out hit))
+        {
+            if (hit.collider.gameObject.tag != enemies[0].tag)
+            {
+                yes = true;
+            }
+        }
+
+        return yes;
+
+    }
+
+    public bool canIPass(GameObject g)
+    {
+        RaycastHit hit;
+        bool yes = false;
+        Vector3 to_goal = (g.transform.position - transform.position).normalized;
+        if (Physics.Raycast(transform.position, to_goal, out hit))
+        {
+            if (hit.collider.gameObject.tag != enemies[0].tag)
+            {
+                yes = true;
+            }
+        }
+
+        return yes;
+
+    }
+
     public void updateScore()
     {
         foreach(Vector3 key in GameConstants.centers)
@@ -497,7 +757,7 @@ public class AI_Player : MonoBehaviour
         Vector3 theKey = new Vector3();
         foreach (Vector3 key in GameConstants.centersDic.Keys)
         {
-            if(gameObject.tag == "RedTeam")
+            if(team == 2)
             {
                 if(key.x < GameObject.Find("FieldCenter").transform.position.x)
                 {
@@ -508,7 +768,7 @@ public class AI_Player : MonoBehaviour
                     }
                 }
             }
-            if (gameObject.tag == "BlueTeam")
+            if (team == 1)
             {
                 if (key.x > GameObject.Find("FieldCenter").transform.position.x)
                 {
@@ -537,5 +797,82 @@ public class AI_Player : MonoBehaviour
             }
         }
     }
-    
+
+    public Vector3 getGoodPos(AI_Player leader)
+    {
+        if(leader != null)
+        {
+            float dist = 1000f;
+            int pos = 0;
+            for (int i = 0; i < GameConstants.centers.Length; i++)
+            {
+                if (Vector3.Distance(GameConstants.centers[i], leader.transform.position) < dist)
+                {
+                    dist = Vector3.Distance(GameConstants.centers[i], leader.transform.position);
+                    pos = i;
+                }
+            }
+
+            if (team == 1)
+            {
+                if(leader.transform.position.z < transform.position.z)
+                {
+                    if ((pos + 20 + 3) < 200)
+                    {
+                        return GameConstants.centers[pos + 20 + 3];
+                    }
+                    else
+                    {
+                        return GameConstants.centers[pos + 3];
+                    }
+                }
+                else
+                {
+                    if ((pos - 20 + 3) > 0)
+                    {
+                        return GameConstants.centers[pos - 20 + 3];
+                    }
+                    else
+                    {
+                        return GameConstants.centers[pos + 3];
+                    }
+                }
+            }
+            else
+            {
+                
+                if (leader.transform.position.z < transform.position.z)
+                {
+                    int indice = pos - 20 - 3;
+                    if (indice > 0)
+                    {
+                        return GameConstants.centers[pos - 20 - 3];
+                    }
+                    else
+                    {
+                        return GameConstants.centers[pos - 3];
+                    }
+                }
+                else
+                {
+                    if ((pos + 20 - 3) < 200)
+                    {
+                        return GameConstants.centers[pos + 20 - 3];
+                    }
+                    else
+                    {
+                        return GameConstants.centers[pos - 3];
+                        Debug.Log((pos + 20 - 3) + " indice");
+                    }
+                }
+                    
+            }
+        }
+        else
+        {
+            return GameConstants.centers[0];
+        }
+        
+    }
+
 }

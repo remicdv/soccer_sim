@@ -35,7 +35,8 @@ public class FirstState : State<AI_Player>
         if (_owner.GetLeader() != null)
         {
             test = true;
-            pos = _owner.getBestSupportingSpot();
+            //pos = _owner.getBestSupportingSpot();
+            pos = _owner.getGoodPos(_owner.GetLeader());
         }
     }
 
@@ -55,39 +56,49 @@ public class FirstState : State<AI_Player>
 
     public override void UpdateState(AI_Player _owner)
     {
+        _owner.RotateTheBall();
         Vector3 v = new Vector3(_owner.transform.position.x, _owner.transform.position.y + 5f, _owner.transform.position.z);
         Debug.DrawRay(_owner.transform.position, v - _owner.transform.position, Color.white);
 
-		//_owner.transform.position = Vector3.MoveTowards (_owner.transform.position, GameConstants.centers [_owner.homeRegion], 1.0f);
+        //_owner.transform.position = Vector3.MoveTowards (_owner.transform.position, GameConstants.centers [_owner.homeRegion], 1.0f);
 
-        if (_owner.amITheSupportingPlayer)
+        if (_owner.myTeamState == AI_Player.stateTeam.Defense)
         {
-            if (!test)
-            {
-                pos = _owner.getBestSupportingSpot();
-            }
-            _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.cyan);
-            _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, pos, 1f);
-            Debug.DrawLine(pos, new Vector3(pos.x, pos.y + 15, pos.z), Color.blue);
-
+            _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, GameConstants.centers[_owner.homeRegion], 1.0f);
+            _owner.amITheSupportingPlayer = false;
         }
         else
         {
-            if (_owner.tag == "BlueTeam")
-            {
-                _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
-            }
-            else
-            {
-                _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-            }
 
-            if(_owner.myTeamState == AI_Player.stateTeam.Defense)
+            if (_owner.amITheSupportingPlayer)
             {
-                _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, GameConstants.centers[_owner.homeRegion], 1.0f);
+                /*if (!test)
+                {*/
+                //pos = _owner.getBestSupportingSpot();
+                pos = _owner.getGoodPos(_owner.GetLeader());
+                //}
+               /* if (_owner.tag == "BlueTeam")
+                {
+                    _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.cyan);
+                }
+                else
+                {
+                    _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.magenta);
+                }*/
+                _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, pos, 1f);
+                Debug.DrawLine(pos, new Vector3(pos.x, pos.y + 25, pos.z), Color.blue);
+
             }
             else
             {
+                if (_owner.tag == "BlueTeam")
+                {
+                    _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                }
+                else
+                {
+                    _owner.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                }
                 _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, GameConstants.centers[_owner.homeRegionAttack], 1.0f);
             }
         }

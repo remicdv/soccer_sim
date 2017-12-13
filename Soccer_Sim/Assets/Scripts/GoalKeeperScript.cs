@@ -5,17 +5,20 @@ using StateStuff;
 
 public class GoalKeeperScript : MonoBehaviour {
 
-	GameObject ball;
+	public GameObject ball;
 	GameObject upGoalLimit;
 	GameObject botGoalLimit;
 	Vector3 upGoalPosition;
 	Vector3 botGoalPosition;
 	bool ballIsBottom;
 	bool ballIsTop;
-	FieldOfView fov;
+    public bool onBall = false;
+	public FieldOfView fov;
 	Vector3 beginningPos;
+    public GameObject enemyGoal;
+    public GameObject homeGoal;
 
-	public StateMachine<GoalKeeperScript> stateMachine { get; set; }
+    public StateMachine<GoalKeeperScript> stateMachine { get; set; }
 
 	// Use this for initialization
 	void Start () 
@@ -51,10 +54,6 @@ public class GoalKeeperScript : MonoBehaviour {
 			GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, 0);
 		}
 
-		if(fov.findBall(ball))
-		{
-			stateMachine.ChangeState (GoalKeeperChaseBall.Instance);
-		}
 
 		stateMachine.Update ();
 
@@ -99,4 +98,44 @@ public class GoalKeeperScript : MonoBehaviour {
 		newRotation.z = 0f;
 		transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 8);
 	}
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.name == "Ball")
+        {
+            onBall = true;
+        }
+
+    }
+    void OnCollisionStay(Collision col)
+    {
+        if (col.gameObject.name == "Ball")
+        {
+            onBall = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.name == "Ball")
+        {
+            onBall = false;
+        }
+    }
+
+    public Vector3 AddNoiseOnAngle(float min, float max)
+    {
+        // Find random angle between min & max inclusive
+        float xNoise = Random.Range(min, max);
+        float yNoise = Random.Range(min, max);
+        float zNoise = Random.Range(min, max);
+
+        // Convert Angle to Vector3
+        Vector3 noise = new Vector3(
+          Mathf.Sin(2 * Mathf.PI * xNoise / 360),
+          Mathf.Sin(2 * Mathf.PI * yNoise / 360),
+          Mathf.Sin(2 * Mathf.PI * zNoise / 360)
+        );
+        return noise;
+    }
 }
