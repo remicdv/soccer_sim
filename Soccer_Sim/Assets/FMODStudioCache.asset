@@ -12,22 +12,21 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 114849352066963702}
-  - {fileID: 114357369548575282}
+  - {fileID: 114493924875508910}
+  - {fileID: 114853180493024068}
   EditorEvents:
-  - {fileID: 114733732737580068}
-  - {fileID: 114787580132807380}
-  - {fileID: 114011066670570610}
-  - {fileID: 114673983128626864}
-  - {fileID: 114757546867366552}
-  - {fileID: 114449840686591534}
-  - {fileID: 114380117516055996}
-  - {fileID: 114322453334520370}
-  - {fileID: 114768993633199226}
-  - {fileID: 114943852893231036}
-  MasterBankRef: {fileID: 114357369548575282}
-  StringsBankRef: {fileID: 114849352066963702}
-  stringsBankWriteTime: 636473992769571622
+  - {fileID: 114638441817585060}
+  - {fileID: 114305806590156808}
+  - {fileID: 114972221343303208}
+  - {fileID: 114153250354003738}
+  - {fileID: 114781338726120852}
+  - {fileID: 114647494173748792}
+  - {fileID: 114276096862646884}
+  - {fileID: 114431299032183094}
+  - {fileID: 114471371044993786}
+  MasterBankRef: {fileID: 114853180493024068}
+  StringsBankRef: {fileID: 114493924875508910}
+  stringsBankWriteTime: 636492054608409096
   cacheVersion: 2
 --- !u!114 &114009306761132704
 MonoBehaviour:
@@ -114,6 +113,28 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1148
   Exists: 1
+--- !u!114 &114153250354003738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Crowd Reactions/Near Miss
+  guid: 7b77d32bb6f72b40be3243787b3e4bbc
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 23614
 --- !u!114 &114200370238374866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +197,50 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 524
+--- !u!114 &114276096862646884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Whistle/One_fast_whistle
+  guid: b5e938e64aeaf940af24c15d142b288a
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 524
+--- !u!114 &114305806590156808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Whistle/Two_whistle
+  guid: 40e5552db3be6843aa434401568e9c2e
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1774
 --- !u!114 &114322453334520370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +325,28 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 1774
+--- !u!114 &114431299032183094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Whistle/One_whistle
+  guid: ccc927a8ffb06447be8335b24c5a82bb
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 879
 --- !u!114 &114449840686591534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,6 +413,48 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 23614
+--- !u!114 &114471371044993786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Football Crowd
+  guid: fb2be362ccb716479f6eb84329101277
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 114785006546226534}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 204355
+--- !u!114 &114493924875508910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Mes Documents\Mes Cours\Master_2\Son_Musique\soccer_sim\Build\Desktop\Master
+    Bank.strings.bank
+  lastModified: 636492054608409096
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1148
+  Exists: 1
 --- !u!114 &114562459487118404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,6 +471,65 @@ MonoBehaviour:
   Max: 1
   Default: 0
 --- !u!114 &114620062025978846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CrowdExcitation
+  Min: 0
+  Max: 1
+  Default: 0
+--- !u!114 &114638441817585060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Whistle/Three_whistle
+  guid: 10f5c8157c1025429a8c78a8c9413e6a
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2615
+--- !u!114 &114647494173748792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Crowd Reactions/Reaction to Goal
+  guid: 9452692f26fdfe46a2dc0ca97799250f
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 28000
+--- !u!114 &114662661894165266
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -460,6 +648,43 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 204355
+--- !u!114 &114781338726120852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Shoot
+  guid: 7e155e289b9b644b86eefa9eab6d3385
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1724
+--- !u!114 &114785006546226534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CrowdExcitation
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &114787580132807380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,6 +747,40 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1182
   Exists: 1
+--- !u!114 &114853180493024068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\Mes Documents\Mes Cours\Master_2\Son_Musique\soccer_sim\Build\Desktop\Master
+    Bank.bank
+  lastModified: 636492054608389206
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 4481856
+  Exists: 1
+--- !u!114 &114929369607093852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CrowdExcitation
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &114943852893231036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,6 +847,28 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 879
+--- !u!114 &114972221343303208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Player_colision
+  guid: 5a3e9ca5c07e164a9db8d5650e92a371
+  Banks:
+  - {fileID: 114853180493024068}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 470
 --- !u!114 &114993655577365978
 MonoBehaviour:
   m_ObjectHideFlags: 0
