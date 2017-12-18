@@ -11,9 +11,6 @@ public class AI_Player : MonoBehaviour
     [FMODUnity.EventRef]
     public string colisionSound;
 
-    [FMODUnity.EventRef]
-    public string footStep;
-
     public enum stateTeam { Defense, Attack }
     public enum rolePlayer { DG, DD, DCG, DCD, MDF, MCG, MCD, AD, AG, BU}
 
@@ -157,12 +154,12 @@ public class AI_Player : MonoBehaviour
         }
 
 
-//        if ((col.gameObject.tag == "BlueTeam" || col.gameObject.tag == "RedTeam") && fov.findBall(ball))
-//        {
-//            FMOD.Studio.EventInstance colision = FMODUnity.RuntimeManager.CreateInstance(colisionSound);
-//            colision.start();
-//            colision.release();
-//        }
+        if ((col.gameObject.tag == "BlueTeam" || col.gameObject.tag == "RedTeam") && fov.findBall(ball))
+        {
+            FMOD.Studio.EventInstance colision = FMODUnity.RuntimeManager.CreateInstance(colisionSound);
+            colision.start();
+            colision.release();
+        }
 
     }
     void OnCollisionStay(Collision col)
