@@ -32,9 +32,9 @@ public class KickBall : State<AI_Player>
     public override void EnterState(AI_Player _owner)
     {
         Debug.Log("Entering Kick Ball State");
-		//FMOD.Studio.EventInstance kick = FMODUnity.RuntimeManager.CreateInstance (_owner.kickSound);
-		//kick.start ();
-		//kick.release ();
+		FMOD.Studio.EventInstance kick = FMODUnity.RuntimeManager.CreateInstance (_owner.kickSound);
+		kick.start ();
+		kick.release ();
     }
 
     public override void ExitState(AI_Player _owner)

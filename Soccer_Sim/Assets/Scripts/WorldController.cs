@@ -16,10 +16,10 @@ public class WorldController : MonoBehaviour {
     Text scoreText;
     bool start;
     bool end;
-    int timer;
+    float timer;
     GameObject ball;
     float delta;
-    float seconds;
+    int seconds;
     public float whokickOff;
     int minuts;
 
@@ -118,19 +118,13 @@ public class WorldController : MonoBehaviour {
         //seconds++;
         if (start)
         {
-            timer = (int)(Time.time - delta);
+            timer += Time.deltaTime;
             if(timer == 300)
             {
                 end = true;
             }
-            seconds = (Time.time - delta)%60;
-            //minuts = (Time.time - delta) / 60;
-            bool equals = AlmostEquals(seconds, 0.0, 0.00001);
-            if (seconds > 0 && seconds <0.0001f)
-            {
-                minuts++;
-            }
-            Debug.Log("minuts" + minuts);
+            seconds = (int)timer%60;
+            minuts = (int)System.Math.Ceiling(timer / 60 - 1);
 
             timeText.text = "Time : " + minuts.ToString("00") + " : " + seconds.ToString("00");
         }
@@ -146,7 +140,7 @@ public class WorldController : MonoBehaviour {
                 AI_Player a = p1.GetComponent("AI_Player") as AI_Player;
                 if (a != null)
                 {
-                    a.transform.position = new Vector3(a.transform.position.x - 3, a.transform.position.y, a.transform.position.z);
+                    a.transform.position = new Vector3(a.transform.position.x - 3, a.transform.position.y, a.transform.position.z -3);
                     a.stateMachine.ChangeState(FirstState.Instance);
                 }
             }
@@ -156,7 +150,7 @@ public class WorldController : MonoBehaviour {
                 AI_Player a = p2.GetComponent("AI_Player") as AI_Player;
                 if (a != null)
                 {
-                    a.transform.position = new Vector3(a.transform.position.x + 3, a.transform.position.y, a.transform.position.z);
+                    a.transform.position = new Vector3(a.transform.position.x + 3, a.transform.position.y, a.transform.position.z +3 );
                     a.stateMachine.ChangeState(FirstState.Instance);
                 }
             }

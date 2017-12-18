@@ -83,21 +83,34 @@ public class Dribbling : State<AI_Player>
         if (tothegoal)
         {
             _owner.ToTheBall(30f);
-            if(_owner.team == 1)
+
+        }
+
+        /*if (_owner.team == 1)
+        {
+            if (_owner.canIShoot())
             {
-                    if (_owner.canIShoot())
+                if(!tothegoal)
+                {
+                    _owner.ToTheGoal();
+                    tothegoal = true;
+                    
+                }
+                else
+                {
+
+                    if (Vector3.Distance(_owner.enemyGoal.transform.position, _owner.ball.transform.position) > 185f)
                     {
                         _owner.kickDir = (_owner.enemyGoal.transform.position - _owner.ball.transform.position).normalized;
-                        _owner.kickDir += _owner.AddNoiseOnAngle(0, 15);
+                        _owner.kickDir += _owner.AddNoiseOnAngle(0, 10);
                         _owner.kickDir = _owner.kickDir.normalized;
-                        //_owner.kickDir *= 30f;
+                        _owner.kickDir *= 30f;
                         _owner.amIReceiver = false;
                         _owner.stateMachine.ChangeState(KickBall.Instance);
                     }
+                }
             }
-        }
-
-
+        }*/
         //_owner.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
         _owner.fov.FindVisibleInArray(_owner.enemies);
         
@@ -254,7 +267,7 @@ public class Dribbling : State<AI_Player>
                 }
                 if (dToGoal < distBlue)
                 {
-                    _owner.kickDir += _owner.AddNoiseOnAngle(-5, 10);
+                    _owner.kickDir += _owner.AddNoiseOnAngle(0, 10);
                     //_owner.kickDir = _owner.kickDir.normalized;
                     _owner.kickDir *= 1.1f;
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir, Color.black);

@@ -84,7 +84,7 @@ public class AI_Player : MonoBehaviour
             rend.material.SetColor("_Color", Color.red);
             teammates = GameObject.FindGameObjectsWithTag("RedTeam");
             enemies = GameObject.FindGameObjectsWithTag("BlueTeam");
-            homeRegionAttack = homeRegion - 7;
+            homeRegionAttack = homeRegion - 6;
             previousAttack = homeRegionAttack;
         }
         myLover = getMyLover();
@@ -153,6 +153,7 @@ public class AI_Player : MonoBehaviour
                     g.GetComponent<AI_Player>().amIReceiver = false;
                 }
             }
+            stateMachine.ChangeState(Dribbling.Instance);
         }
 
 
@@ -235,7 +236,10 @@ public class AI_Player : MonoBehaviour
                 if(Vector3.Distance(g.transform.position, transform.position) < dist)
                 {
                     dist = Vector3.Distance(g.transform.position, transform.position);
-                    closest = g;
+                    if(canIPass(g))
+                    {
+                        closest = g;
+                    }
                 }
             }
         }
@@ -274,45 +278,7 @@ public class AI_Player : MonoBehaviour
 
     public GameObject findBestTeammateControl()
     {
-        /*AI_Player a = GetMySupportingPlayer();
-        if (a != null)
-        {
-            Vector3 v1 = new Vector3(a.transform.position.x, 0.0f, a.transform.position.z);
-            Vector3 v2 = new Vector3(a.getGoodPos(GetLeader()).x, 0.0f, a.getGoodPos(GetLeader()).z);
-            if (Vector3.Distance(v1, v2) < 15)
-            {
-                if (canIPass(a.gameObject))
-                {
-                    closest = a.gameObject;
-                }
-            }
-        }
-        if(closest == null)
-        {
-
-            float dist = 1000f;
-            foreach (GameObject g in teammates)
-            {
-                if (g.transform != transform)
-                {
-                    AI_Player a1 = g.GetComponent("AI_Player") as AI_Player;
-                    if (a1 != null)
-                    {
-                        a1.fov.FindVisibleInArray(a1.enemies);
-                        if (Vector3.Distance(g.transform.position, transform.position) < dist)
-                        {
-                            if (a1.fov.visibleTargets.Count == 0)
-                            {
-                                dist = Vector3.Distance(g.transform.position, transform.position);
-                                closest = g;
-                            }
-                        }
-                    }
-
-                }
-            }
-        }*/
-
+       
         List<GameObject> passing = new List<GameObject>();
         GameObject passingfree = null;
         int i = 0;
@@ -672,7 +638,7 @@ public class AI_Player : MonoBehaviour
         Vector3 to_goal = (enemyGoal.transform.position - transform.position).normalized;
         if (Physics.Raycast(transform.position, to_goal, out hit))
         {
-            if (hit.collider.gameObject.tag != enemies[0].tag)
+            if (hit.collider.gameObject.tag == enemyGoal.tag)
             {
                 yes = true;
             }
@@ -689,7 +655,7 @@ public class AI_Player : MonoBehaviour
         Vector3 to_goal = (g.transform.position - transform.position).normalized;
         if (Physics.Raycast(transform.position, to_goal, out hit))
         {
-            if (hit.collider.gameObject.tag != enemies[0].tag)
+            if (hit.collider.gameObject.tag == gameObject.tag)
             {
                 yes = true;
             }
