@@ -56,7 +56,7 @@ public class AI_Player : MonoBehaviour
 
     private void Start()
     {
-
+        
         ready = false;
         myRigidbody = GetComponent<Rigidbody>();
         fov = gameObject.GetComponent("FieldOfView") as FieldOfView;

@@ -149,6 +149,7 @@ MonoBehaviour:
   enemies: []
   myLover: {fileID: 0}
   iWantTheBall: 0
+  ready: 0
   ball: {fileID: 0}
   receiver: {fileID: 0}
   amIReceiver: 0
@@ -159,6 +160,7 @@ MonoBehaviour:
   coroutine: 0
   homeRegion: 0
   homeRegionAttack: 0
+  previousAttack: 0
   amITheSupportingPlayer: 0
 --- !u!136 &136446572861084338
 CapsuleCollider:

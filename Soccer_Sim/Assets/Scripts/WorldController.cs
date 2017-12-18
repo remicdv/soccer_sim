@@ -23,6 +23,11 @@ public class WorldController : MonoBehaviour {
     public float whokickOff;
     int minuts;
 
+    [FMODUnity.EventRef]
+    public string crowdEvent;
+    FMOD.Studio.EventInstance crowd;
+
+
     public float conflictDribble;
     GameObject p1;
     GameObject p2;
@@ -32,6 +37,8 @@ public class WorldController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        crowd = FMODUnity.RuntimeManager.CreateInstance(crowdEvent);
+        crowd.start();
 
         player = GameObject.FindGameObjectsWithTag("RedTeam");
         player1 = GameObject.FindGameObjectsWithTag("BlueTeam");
@@ -75,12 +82,16 @@ public class WorldController : MonoBehaviour {
             ++GameConstants.RedScore;
             scoreText.text = "Score : " + GameConstants.RedScore + " - " + GameConstants.BlueScore;
             GameObject.Find("Player").GetComponent<AI_Player>().homeRegion += 1;
+
+            crowd.setParameterValue("CrowdExcitation", 0.8f);
         }
         else if (team == "Blue")
         {
             ++GameConstants.BlueScore;
             scoreText.text = "Score : " + GameConstants.RedScore + " - " + GameConstants.BlueScore;
             GameObject.Find("Player (10)").GetComponent<AI_Player>().homeRegion -= 1;
+
+            crowd.setParameterValue("CrowdExcitation", 0.9f);
 
         }
 
@@ -108,10 +119,24 @@ public class WorldController : MonoBehaviour {
 
         }
     }
-    public static bool AlmostEquals(double double1, double double2, double precision)
+
+    void CrowdCollide(string value)
     {
-        return (System.Math.Abs(double1 - double2) <= precision);
+        if(value == "Crazy")
+        {
+            crowd.setParameterValue("CrowdExcitation", 0.9f);
+        }
+        else if(value == "Mid")
+        {
+            crowd.setParameterValue("CrowdExcitation", 0.75f);
+        }
     }
+
+    void CrowdExit(string value)
+    {
+        crowd.setParameterValue("CrowdExcitation", 0.5f);
+    }
+
 
     private void FixedUpdate()
     {
@@ -161,9 +186,11 @@ public class WorldController : MonoBehaviour {
             endC.gameObject.SetActive(true);
             Debug.Break();
         }
+        
 
 
     }
+    
 
     public GameObject getPlayerDribbling(GameObject[] players)
     {
