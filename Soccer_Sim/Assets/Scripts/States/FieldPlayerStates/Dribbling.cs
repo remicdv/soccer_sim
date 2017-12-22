@@ -80,6 +80,8 @@ public class Dribbling : State<AI_Player>
         _owner.setTeamState(AI_Player.stateTeam.Attack);
         _owner.leader = true;
         _owner.setNotReceiver(_owner.enemies);
+
+        //If the player is dribbling to the goal follow the ball
         if (tothegoal)
         {
             _owner.ToTheBall(30f);
@@ -189,7 +191,6 @@ public class Dribbling : State<AI_Player>
                     Debug.DrawRay(_owner.transform.position, dribbleDir * 10f, Color.red);
                     _owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(dribbleDir.x * 50f, 0.0f, dribbleDir.z * 50f);
                     Vector3 v = new Vector3(dribbleDir.x * 1.5f, 0.0f, dribbleDir.z * 1.5f);
-                    //_owner.ball.transform.position = _owner.ball.transform.position + v;
 
 
                 }
@@ -250,7 +251,6 @@ public class Dribbling : State<AI_Player>
                 Debug.DrawRay(_owner.transform.position, dribbleDir * 10f, Color.red);
                 Vector3 v = new Vector3(dribbleDir.x * 1.5f, 0.0f, dribbleDir.z * 1.5f);
                 _owner.ball.GetComponent<Rigidbody>().velocity = new Vector3(dribbleDir.x * 50f, 0.0f, dribbleDir.z * 50f);
-                //_owner.ball.transform.position = _owner.ball.transform.position + v;
             }
             else
             {
@@ -265,10 +265,9 @@ public class Dribbling : State<AI_Player>
                 {
                     distBlue = 150f;
                 }
-                if (dToGoal < distBlue)
+                if (dToGoal < distBlue && !tothegoal)
                 {
                     _owner.kickDir += _owner.AddNoiseOnAngle(0, 10);
-                    //_owner.kickDir = _owner.kickDir.normalized;
                     _owner.kickDir *= 1.1f;
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir, Color.black);
                     _owner.amIReceiver = false;
@@ -283,7 +282,6 @@ public class Dribbling : State<AI_Player>
                     }
                     Vector3 v = new Vector3(_owner.kickDir.x*50, 0.0f, _owner.kickDir.z*50);
                     _owner.ball.GetComponent<Rigidbody>().velocity = v;
-                    //_owner.ball.transform.position = _owner.transform.position + v;
                     _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, _owner.ball.transform.position + v, 1f);
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.red);
                     

@@ -47,7 +47,8 @@ public class BeginState : State<AI_Player>
 
         if (Vector3.Distance(v1, v2) < 1)
         {
-            _owner.ready = true;
+            if(!_owner.finish)
+                _owner.ready = true;
         }
 
     }
