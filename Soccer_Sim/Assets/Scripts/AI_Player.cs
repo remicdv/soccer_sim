@@ -11,6 +11,12 @@ public class AI_Player : MonoBehaviour
     [FMODUnity.EventRef]
     public string colisionSound;
 
+	[FMODUnity.EventRef]
+	public string le_tir;
+
+	[FMODUnity.EventRef]
+	public string near_miss;
+
     public enum stateTeam { Defense, Attack }
     public enum rolePlayer { DG, DD, DCG, DCD, MDF, MCG, MCD, AD, AG, BU}
 
@@ -96,11 +102,8 @@ public class AI_Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         transform.position = new Vector3(transform.position.x, startPos.y, transform.position.z);
         stateMachine.Update();
-
-           
     }
 
     void OnCollisionEnter(Collision col)
