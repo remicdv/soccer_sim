@@ -673,6 +673,10 @@ Prefab:
       propertyPath: m_TagString
       value: BlueTeam
       objectReference: {fileID: 0}
+    - target: {fileID: 1382979718538466, guid: c2e01f5a6619cec408b853dfeb5082e8, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114510412193384448, guid: c2e01f5a6619cec408b853dfeb5082e8, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: c2e01f5a6619cec408b853dfeb5082e8, type: 2}
@@ -2208,6 +2212,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114510387324661706, guid: dca79402dcaa85747aaa5bc0e91346d4,
+        type: 2}
+      propertyPath: greatPassSpeechEventRef
+      value: event:/Speakers/Speaker's Great Pass Reaction
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dca79402dcaa85747aaa5bc0e91346d4, type: 2}
   m_IsPrefabParent: 0
@@ -2629,6 +2638,10 @@ Prefab:
       propertyPath: homeRegion
       value: 144
       objectReference: {fileID: 0}
+    - target: {fileID: 1126046810533134, guid: dca79402dcaa85747aaa5bc0e91346d4, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dca79402dcaa85747aaa5bc0e91346d4, type: 2}
   m_IsPrefabParent: 0
@@ -2913,6 +2926,10 @@ Prefab:
       propertyPath: viewAngle
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 1126046810533134, guid: dca79402dcaa85747aaa5bc0e91346d4, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dca79402dcaa85747aaa5bc0e91346d4, type: 2}
   m_IsPrefabParent: 0
@@ -3132,6 +3149,10 @@ Prefab:
         type: 2}
       propertyPath: viewAngle
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126046810533134, guid: dca79402dcaa85747aaa5bc0e91346d4, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dca79402dcaa85747aaa5bc0e91346d4, type: 2}
@@ -3455,6 +3476,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whokickOff: 0
   crowdEvent: event:/Football Crowd
+  gameStartingSpeechEventRef: event:/Speakers/Speaker's Game Starting
+  reactionToGoalSpeechEventRef: event:/Speakers/Speaker's Goal Reaction
+  crowdReactionToGoalEventRef: event:/Crowd Reactions/Reaction to Goal
   conflictDribble: 0
 --- !u!4 &1676762336
 Transform:
@@ -3818,6 +3842,10 @@ Prefab:
     - target: {fileID: 1382979718538466, guid: c2e01f5a6619cec408b853dfeb5082e8, type: 2}
       propertyPath: m_TagString
       value: RedTeam
+      objectReference: {fileID: 0}
+    - target: {fileID: 1382979718538466, guid: c2e01f5a6619cec408b853dfeb5082e8, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114510412193384448, guid: c2e01f5a6619cec408b853dfeb5082e8, type: 2}

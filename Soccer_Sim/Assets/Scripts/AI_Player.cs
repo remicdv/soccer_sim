@@ -11,11 +11,17 @@ public class AI_Player : MonoBehaviour
     [FMODUnity.EventRef]
     public string colisionSound;
 
+<<<<<<< HEAD
+    [FMODUnity.EventRef]
+    public string greatPassSpeechEventRef;
+    public FMOD.Studio.EventInstance greatPassSpeechEvent;
+=======
 	[FMODUnity.EventRef]
 	public string le_tir;
 
 	[FMODUnity.EventRef]
 	public string near_miss;
+>>>>>>> 4091a7630e0ed58a9f4ef21606b49b255b74ffac
 
     public enum stateTeam { Defense, Attack }
     public enum rolePlayer { DG, DD, DCG, DCD, MDF, MCG, MCD, AD, AG, BU}
@@ -60,7 +66,10 @@ public class AI_Player : MonoBehaviour
 
     private void Start()
     {
-        
+        // Creating greatPassSpeechEvent
+        greatPassSpeechEvent = FMODUnity.RuntimeManager
+                                        .CreateInstance(greatPassSpeechEventRef);
+
         ready = false;
         finish = false;
         myRigidbody = GetComponent<Rigidbody>();

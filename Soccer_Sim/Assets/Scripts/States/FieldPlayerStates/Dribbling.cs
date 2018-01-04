@@ -204,6 +204,11 @@ public class Dribbling : State<AI_Player>
                     AI_Player a = _owner.receiver.GetComponent("AI_Player") as AI_Player;
                     if(a != null)
                     {
+                        // Play a "C'est une belle passe" speech 1 time out of 4
+                        float randomDraw = Random.Range(0, 100);
+                        if (randomDraw <= 10)
+                            _owner.greatPassSpeechEvent.start();
+
                         a.amIReceiver = true;
                         _owner.amIReceiver = false;
                         _owner.stateMachine.ChangeState(KickBall.Instance);

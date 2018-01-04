@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kickSound: event:/Shoot
   colisionSound: event:/Player_colision
+  greatPassSpeechEventRef: event:/Speakers/Speaker's Great Pass Reaction
   le_tir: event:/Speakers/Speaker's Near Miss Reaction
   near_miss: event:/Crowd Reactions/Near Miss
   myRole: 0
