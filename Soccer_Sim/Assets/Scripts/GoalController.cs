@@ -26,7 +26,7 @@ public class GoalController : MonoBehaviour {
         {
             Debug.Log("Blue goal");
             world.SendMessage("GoalScored", "Blue");
-            ball.transform.position = new Vector3(0, 1.5f, 0);
+            ball.transform.position = new Vector3(0, 4f, 0);
             ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         }
         else if (other.name == "Ball" && name == "RedGoal")

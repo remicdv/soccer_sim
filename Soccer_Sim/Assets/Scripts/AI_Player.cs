@@ -11,17 +11,15 @@ public class AI_Player : MonoBehaviour
     [FMODUnity.EventRef]
     public string colisionSound;
 
-<<<<<<< HEAD
     [FMODUnity.EventRef]
     public string greatPassSpeechEventRef;
     public FMOD.Studio.EventInstance greatPassSpeechEvent;
-=======
+
 	[FMODUnity.EventRef]
 	public string le_tir;
 
 	[FMODUnity.EventRef]
 	public string near_miss;
->>>>>>> 4091a7630e0ed58a9f4ef21606b49b255b74ffac
 
     public enum stateTeam { Defense, Attack }
     public enum rolePlayer { DG, DD, DCG, DCD, MDF, MCG, MCD, AD, AG, BU}
@@ -227,17 +225,20 @@ public class AI_Player : MonoBehaviour
         float dist = 1000f;
         foreach (GameObject g in teammates)
         {
-            if (g.transform != transform)
+            if (g.name != "GoalKeaper_blue" && g.name != "GoalKeaper_red")
             {
-                if(g.transform.position.x >= transform.position.x)
+                if (g.transform != transform)
                 {
-                    AI_Player a = g.GetComponent<AI_Player>();
-                    if (a != null)
+                    if (g.transform.position.x >= transform.position.x)
                     {
-                        if (a.canIShoot() && canIPass(a.gameObject))
+                        AI_Player a = g.GetComponent<AI_Player>();
+                        if (a != null)
                         {
-                            closest = g;
-                            break;
+                            if (a.canIShoot() && canIPass(a.gameObject))
+                            {
+                                closest = g;
+                                break;
+                            }
                         }
                     }
                 }
@@ -258,15 +259,18 @@ public class AI_Player : MonoBehaviour
         int i = 0;
         foreach(GameObject g in teammates)
         {
-            if (g.transform != transform)
+            if (g.name != "GoalKeaper_blue" && g.name != "GoalKeaper_red")
             {
-                AI_Player a = g.GetComponent("AI_Player") as AI_Player;
-                if (a != null)
+                if (g.transform != transform)
                 {
-                    if (canIPass(g))
+                    AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+                    if (a != null)
                     {
-                        passing.Add(g);
-                        i++;
+                        if (canIPass(g))
+                        {
+                            passing.Add(g);
+                            i++;
+                        }
                     }
                 }
             }
@@ -276,15 +280,19 @@ public class AI_Player : MonoBehaviour
             int count = 15;
             foreach(GameObject g in passing)
             {
-                if (g.transform != transform)
+                if (g.name != "GoalKeaper_blue" && g.name != "GoalKeaper_red")
                 {
-                    AI_Player a = g.GetComponent("AI_Player") as AI_Player;
-                    if (a != null) {
-                        a.fov.FindTargetsInArray(a.enemies);
-                        if(a.fov.visibleTargets.Count < count)
+                    if (g.transform != transform)
+                    {
+                        AI_Player a = g.GetComponent("AI_Player") as AI_Player;
+                        if (a != null)
                         {
-                            passingfree = g;
-                            count = a.fov.visibleTargets.Count;
+                            a.fov.FindTargetsInArray(a.enemies);
+                            if (a.fov.visibleTargets.Count < count)
+                            {
+                                passingfree = g;
+                                count = a.fov.visibleTargets.Count;
+                            }
                         }
                     }
                 }
@@ -801,7 +809,7 @@ public class AI_Player : MonoBehaviour
                     else
                     {
                         return GameConstants.centers[pos - 3];
-                        Debug.Log((pos + 20 - 3) + " indice");
+                        //Debug.Log((pos + 20 - 3) + " indice");
                     }
                 }
                     

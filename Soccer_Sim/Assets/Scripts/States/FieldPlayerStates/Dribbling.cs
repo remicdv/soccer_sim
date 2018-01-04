@@ -8,7 +8,10 @@ public class Dribbling : State<AI_Player>
     public bool dir;
     public bool tothegoal;
 
-	private float interval = 1.0f;
+    private float timeIntervalBeetweenGreatPassSpeech = 1.0f;
+    private float timerForGreatPassSpeech = 0f;
+
+    private float interval = 1.0f;
 	private float time = 2.5f;
 
     private Dribbling()
@@ -36,12 +39,12 @@ public class Dribbling : State<AI_Player>
 
     public override void EnterState(AI_Player _owner)
     {
-        Debug.Log("Entering Dribbling State");
+        //Debug.Log("Entering Dribbling State");
         if (_owner.isDribbler())
         {
             _owner.stateMachine.ChangeState(FirstState.Instance);
         }
-        //Debug.Log(dot);
+        ////Debug.Log(dot);
         dir = false;
         _owner.ball.GetComponent<Rigidbody>().velocity *= 0.0f;
         _owner.GetComponent<Rigidbody>().velocity *= 0.0f;
@@ -62,7 +65,7 @@ public class Dribbling : State<AI_Player>
 
     public override void ExitState(AI_Player _owner)
     {
-        Debug.Log("Exiting Dribbling State");
+        //Debug.Log("Exiting Dribbling State");
         _owner.leader = false;
         if (_owner.tag == "BlueTeam")
         {
@@ -80,6 +83,7 @@ public class Dribbling : State<AI_Player>
     public override void UpdateState(AI_Player _owner)
     {
 		time += Time.deltaTime;
+        timerForGreatPassSpeech += Time.deltaTime;
 
         _owner.setTeamState(AI_Player.stateTeam.Attack);
         _owner.leader = true;
@@ -140,7 +144,7 @@ public class Dribbling : State<AI_Player>
         double dot = 0;
         if (control)
         {
-            //Debug.Log(_owner.teammates);
+            ////Debug.Log(_owner.teammates);
             if(_owner.team == 1)
             {
                 _owner.receiver = _owner.findBestTeammateKick();
@@ -155,7 +159,7 @@ public class Dribbling : State<AI_Player>
                 _owner.kickDir = (_owner.receiver.transform.position - _owner.ball.transform.position).normalized;
 
                 dot = Vector3.Dot(_owner.kickDir, to_ball);
-                //Debug.Log(dot);
+                ////Debug.Log(dot);
 
                 if (dot < 0)
                 {
@@ -166,7 +170,7 @@ public class Dribbling : State<AI_Player>
                         float angle = _owner.AngleDir(_owner.transform.forward, _owner.kickDir, _owner.transform.up);
                         if (angle == 1f)
                         {
-                            //Debug.Log("right");
+                            ////Debug.Log("right");
                             right = true;
                             Debug.DrawRay(_owner.transform.position, _owner.kickDir * 30f, Color.white);
 
@@ -174,7 +178,7 @@ public class Dribbling : State<AI_Player>
                         else
                         {
 
-                            //Debug.Log("Left");
+                            ////Debug.Log("Left");
                             Debug.DrawRay(_owner.transform.position, _owner.kickDir * 30f, Color.black);
                             right = false;
                         }
@@ -182,13 +186,13 @@ public class Dribbling : State<AI_Player>
                     }
                     if (right)
                     {
-                        //Debug.Log("Right!!!");
+                        ////Debug.Log("Right!!!");
                         Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.blue);
                         dribbleDir = _owner.RotateY(to_ball, 90f);
                     }
                     else
                     {
-                        //Debug.Log("Left!!!");
+                        ////Debug.Log("Left!!!");
                         dribbleDir = _owner.RotateY(to_ball, -90f);
                         Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.blue);
                     }
@@ -206,8 +210,11 @@ public class Dribbling : State<AI_Player>
                     {
                         // Play a "C'est une belle passe" speech 1 time out of 4
                         float randomDraw = Random.Range(0, 100);
-                        if (randomDraw <= 10)
+                        if (randomDraw <= 25 && timerForGreatPassSpeech > timeIntervalBeetweenGreatPassSpeech)
+                        {
                             _owner.greatPassSpeechEvent.start();
+                            timerForGreatPassSpeech = 0;
+                        } 
 
                         a.amIReceiver = true;
                         _owner.amIReceiver = false;
@@ -218,7 +225,7 @@ public class Dribbling : State<AI_Player>
             }
             else
             {
-                Debug.Log("null "+_owner.team);
+                //Debug.Log("null "+_owner.team);
             }
         }
         else
@@ -234,26 +241,26 @@ public class Dribbling : State<AI_Player>
                     float angle = _owner.AngleDir(_owner.transform.forward, _owner.kickDir, _owner.transform.up);
                     if (angle == 1f)
                     {
-                        //Debug.Log("right");
+                        ////Debug.Log("right");
                         right = true;
                     }
                     else
                     {
 
-                        // Debug.Log("Left");
+                        // //Debug.Log("Left");
                         right = false;
                     }
                     dir = true;
                 }
                 if (right)
                 {
-                    //Debug.Log("Right!!!");
+                    ////Debug.Log("Right!!!");
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.blue);
                     dribbleDir = _owner.RotateY(to_ball, 90f);
                 }
                 else
                 {
-                    //Debug.Log("Left!!!");
+                    ////Debug.Log("Left!!!");
                     dribbleDir = _owner.RotateY(to_ball, -90f);
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.blue);
                 }
@@ -268,7 +275,7 @@ public class Dribbling : State<AI_Player>
                 float distBlue;
                 if(_owner.team == 1)
                 {
-                    distBlue = 250f;
+                    distBlue = 175f;
                 }
                 else
                 {
@@ -276,15 +283,18 @@ public class Dribbling : State<AI_Player>
                 }
                 if (dToGoal < distBlue && !tothegoal)
                 {
-                    _owner.kickDir += _owner.AddNoiseOnAngle(0, 10);
+                    _owner.kickDir += _owner.AddNoiseOnAngle(0, 5);
+                    _owner.kickDir -= _owner.AddNoiseOnAngle(0, 2);
                     _owner.kickDir *= 1.1f;
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir, Color.black);
                     _owner.amIReceiver = false;
 
-					//Audio play
-
-					if (time > interval) {
-						FMOD.Studio.EventInstance shot = FMODUnity.RuntimeManager.CreateInstance (_owner.le_tir);
+                    //Audio play
+                    
+                    if (time > interval) {
+                        if(GameObject.Find("World").GetComponent<WorldController>().crowdExcitationRatio <= 0.95f)
+                            GameObject.Find("World").GetComponent<WorldController>().crowdExcitationRatio += 0.05f;
+                        FMOD.Studio.EventInstance shot = FMODUnity.RuntimeManager.CreateInstance (_owner.le_tir);
 						shot.start ();
 						shot.release ();
 
@@ -311,7 +321,7 @@ public class Dribbling : State<AI_Player>
                     _owner.transform.position = Vector3.MoveTowards(_owner.transform.position, _owner.ball.transform.position + v, 1f);
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir * 10f, Color.red);
                     
-                    Debug.Log("Je dribble");
+                    //Debug.Log("Je dribble");
                 }
 
             }

@@ -32,13 +32,13 @@ public class GoalKeeperFollowBall : State<GoalKeeperScript> {
 
 	public override void EnterState(GoalKeeperScript _owner)
 	{
-		Debug.Log("Entering GoalKeeper Follow Ball State");
+		//Debug.Log("Entering GoalKeeper Follow Ball State");
 
 	}
 
 	public override void ExitState(GoalKeeperScript _owner)
 	{
-		Debug.Log("Exiting GoalKeeper Follow Ball State");
+		//Debug.Log("Exiting GoalKeeper Follow Ball State");
 	}
 
 	public override void UpdateState(GoalKeeperScript _owner)

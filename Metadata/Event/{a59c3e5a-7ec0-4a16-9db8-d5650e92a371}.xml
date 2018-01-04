@@ -116,6 +116,7 @@
     <object class="MixerBusEffectChain" id="{066dc5f3-7e28-4ab3-824a-8a699cacae11}">
         <relationship name="effects">
             <destination>{d6554a48-0fcb-400b-bba3-77b0785f0c67}</destination>
+            <destination>{e78d092a-8bbc-4a73-aad7-f86fb245b34a}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{dc60ae59-4f88-4339-b85a-101c951b7c6c}"/>
@@ -135,6 +136,32 @@
     </object>
     <object class="MixerBusPanner" id="{c12f78bf-691b-4e59-8816-2c83eba2f8cc}"/>
     <object class="MixerBusFader" id="{d6554a48-0fcb-400b-bba3-77b0785f0c67}"/>
+    <object class="MultibandEqEffect" id="{e78d092a-8bbc-4a73-aad7-f86fb245b34a}">
+        <property name="filterTypeB">
+            <value>6</value>
+        </property>
+        <property name="filterTypeC">
+            <value>9</value>
+        </property>
+        <property name="frequencyB">
+            <value>36.4735413</value>
+        </property>
+        <property name="frequencyC">
+            <value>107.123421</value>
+        </property>
+        <property name="qualityB">
+            <value>0.330241382</value>
+        </property>
+        <property name="qualityC">
+            <value>3.89999986</value>
+        </property>
+        <property name="gainB">
+            <value>-30</value>
+        </property>
+        <property name="gainC">
+            <value>-28.965517</value>
+        </property>
+    </object>
     <object class="AutomationPoint" id="{2a44212b-927a-48ba-a767-9bac4d4c6250}">
         <property name="position">
             <value>0.25</value>

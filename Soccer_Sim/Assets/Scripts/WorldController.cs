@@ -41,12 +41,24 @@ public class WorldController : MonoBehaviour {
     public string crowdReactionToGoalEventRef;
     FMOD.Studio.EventInstance crowdReactionToGoalEvent;
 
+    [FMODUnity.EventRef]
+    public string ambianceReactionSpeechEventRef;
+    FMOD.Studio.EventInstance ambianceReactionSpeechEvent;
+
     public float conflictDribble;
     GameObject p1;
     GameObject p2;
 
     GameObject[] player;
     GameObject[] player1;
+
+    public float crowdExcitationRatio = 0.2f;
+
+    private float intervalBeforeExcitationDecrease = 25f;
+    private float excitationTimer = 0f;
+
+    private float intervalBeforeAmbianceComment = 25f;
+    private float ambianceCommentTimer = 0f;
 
     // Use this for initialization
     void Start () {
@@ -64,6 +76,9 @@ public class WorldController : MonoBehaviour {
         // Create crowdReactionToGoalEvent
         crowdReactionToGoalEvent = FMODUnity.RuntimeManager
                                            .CreateInstance(crowdReactionToGoalEventRef);
+
+        // Create ambianceReactionSpeechEvent
+        ambianceReactionSpeechEvent = FMODUnity.RuntimeManager.CreateInstance(ambianceReactionSpeechEventRef);
 
         crowd = FMODUnity.RuntimeManager.CreateInstance(crowdEvent);
         crowd.start();
@@ -92,13 +107,13 @@ public class WorldController : MonoBehaviour {
         whokickOff = Random.Range(0f, 1f);
         if (whokickOff > 0.5f)
         {
-            Debug.Log(whokickOff + " bleu commence");
+            //Debug.Log(whokickOff + " bleu commence");
             kickOffText.text += " Blues start";
             GameObject.Find("Player").GetComponent<AI_Player>().homeRegion += 1;
         }
         else
         {
-            Debug.Log(whokickOff + " rouge commence");
+            //Debug.Log(whokickOff + " rouge commence");
             kickOffText.text += " Reds start";
             GameObject.Find("Player (10)").GetComponent<AI_Player>().homeRegion -= 1;
         }
@@ -110,10 +125,10 @@ public class WorldController : MonoBehaviour {
 
         // Crowd and speaker's reaction to goal are played
         crowdReactionToGoalEvent.start();
-        crowdReactionToGoalEvent.release();
+        //crowdReactionToGoalEvent.release();
 
         reactionToGoalSpeechEvent.start();
-        reactionToGoalSpeechEvent.release();
+        //reactionToGoalSpeechEvent.release();
 
         if (team == "Red")
         {
@@ -121,7 +136,8 @@ public class WorldController : MonoBehaviour {
             scoreText.text = "Score : " + GameConstants.RedScore + " - " + GameConstants.BlueScore;
             GameObject.Find("Player").GetComponent<AI_Player>().homeRegion += 1;
 
-            crowd.setParameterValue("CrowdExcitation", 0.8f);
+            if (crowdExcitationRatio <= 0.85f)
+                crowdExcitationRatio += 0.15f;
         }
         else if (team == "Blue")
         {
@@ -129,7 +145,8 @@ public class WorldController : MonoBehaviour {
             scoreText.text = "Score : " + GameConstants.RedScore + " - " + GameConstants.BlueScore;
             GameObject.Find("Player (10)").GetComponent<AI_Player>().homeRegion -= 1;
 
-            crowd.setParameterValue("CrowdExcitation", 0.9f);
+            if (crowdExcitationRatio <= 0.85f)
+                crowdExcitationRatio += 0.15f;
 
         }
 
@@ -158,26 +175,35 @@ public class WorldController : MonoBehaviour {
         }
     }
 
-    void CrowdCollide(string value)
-    {
-        if(value == "Crazy")
-        {
-            crowd.setParameterValue("CrowdExcitation", 0.9f);
-        }
-        else if(value == "Mid")
-        {
-            crowd.setParameterValue("CrowdExcitation", 0.75f);
-        }
-    }
-
-    void CrowdExit(string value)
-    {
-        crowd.setParameterValue("CrowdExcitation", 0.5f);
-    }
-
-
     private void FixedUpdate()
     {
+        excitationTimer += Time.deltaTime;
+        ambianceCommentTimer += Time.deltaTime;
+
+        if(excitationTimer > intervalBeforeExcitationDecrease && crowdExcitationRatio >= 0.05f)
+        {
+            Debug.Log("Le public s'emmerde !");
+            crowdExcitationRatio -= 0.05f;
+            excitationTimer = 0.0f;
+        }
+
+        float parameterValue = 0f;
+        crowd.getParameterValue("CrowdExcitation", out parameterValue, out parameterValue);
+        //Debug.Log(parameterValue);
+        if (parameterValue != crowdExcitationRatio)
+        {
+            Debug.Log("changing crowd excitation to " + crowdExcitationRatio);
+            crowd.setParameterValue("CrowdExcitation", crowdExcitationRatio);
+
+        }
+
+        if (ambianceCommentTimer > intervalBeforeAmbianceComment && crowdExcitationRatio >= 0.5f && Random.Range(0,100) < 50)
+        {
+            Debug.Log("L'ambiance !");
+            ambianceReactionSpeechEvent.start();
+            //ambianceReactionSpeechEvent.release();
+            ambianceCommentTimer = 0f;
+        }
         //seconds++;
         if (start)
         {
@@ -202,7 +228,7 @@ public class WorldController : MonoBehaviour {
             conflictDribble = Random.Range(0f, 1f);
             if(conflictDribble < 0.5f)
             {
-                Debug.Log("le 1 " + p1);
+                //Debug.Log("le 1 " + p1);
                 AI_Player a = p1.GetComponent("AI_Player") as AI_Player;
                 if (a != null)
                 {
@@ -212,7 +238,7 @@ public class WorldController : MonoBehaviour {
             }
             else
             {
-                Debug.Log("le 2 " + p2);
+                //Debug.Log("le 2 " + p2);
                 AI_Player a = p2.GetComponent("AI_Player") as AI_Player;
                 if (a != null)
                 {
@@ -331,16 +357,16 @@ public class WorldController : MonoBehaviour {
                 kickOff.SetActive(true);
                 if (whokickOff > 0.5f)
                 {
-                    Debug.Log(whokickOff + " bleu commence");
+                    //Debug.Log(whokickOff + " bleu commence");
                     GameObject.Find("Player").GetComponent<AI_Player>().homeRegion -= 1;
                 }
                 else
                 {
-                    Debug.Log(whokickOff + " rouge commence");
+                    //Debug.Log(whokickOff + " rouge commence");
                     GameObject.Find("Player (10)").GetComponent<AI_Player>().homeRegion += 1;
                 }
                 start = true;
-                ball.transform.position = new Vector3(0, 1.5f, 0);
+                ball.transform.position = new Vector3(0, 4f, 0);
                 foreach (GameObject p in player)
                 {
                     AI_Player a = p.GetComponent("AI_Player") as AI_Player;

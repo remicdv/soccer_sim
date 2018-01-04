@@ -31,7 +31,7 @@ public class FirstState : State<AI_Player>
 
     public override void EnterState(AI_Player _owner)
     {
-        Debug.Log("Entering First State");
+        //Debug.Log("Entering First State");
         if (_owner.GetLeader() != null)
         {
             test = true;
@@ -42,7 +42,7 @@ public class FirstState : State<AI_Player>
 
     public override void ExitState(AI_Player _owner)
     {
-        Debug.Log("Exiting First State");
+        //Debug.Log("Exiting First State");
         _owner.amITheSupportingPlayer = false;
         if (_owner.tag == "BlueTeam")
         {
