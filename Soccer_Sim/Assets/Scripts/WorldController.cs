@@ -29,6 +29,17 @@ public class WorldController : MonoBehaviour {
     public string crowdEvent;
     FMOD.Studio.EventInstance crowd;
 
+    [FMODUnity.EventRef]
+    public string gameStartingSpeechEventRef;
+    FMOD.Studio.EventInstance gameStartingSpeechEvent;
+
+    [FMODUnity.EventRef]
+    public string reactionToGoalSpeechEventRef;
+    FMOD.Studio.EventInstance reactionToGoalSpeechEvent;
+
+    [FMODUnity.EventRef]
+    public string crowdReactionToGoalEventRef;
+    FMOD.Studio.EventInstance crowdReactionToGoalEvent;
 
     public float conflictDribble;
     GameObject p1;
@@ -39,6 +50,21 @@ public class WorldController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        // Play speech at the beginning of the game
+        gameStartingSpeechEvent = FMODUnity.RuntimeManager
+                                           .CreateInstance(gameStartingSpeechEventRef);
+        gameStartingSpeechEvent.start();
+        gameStartingSpeechEvent.release();
+
+        // Create reactionToGoalSpeechEvent
+        reactionToGoalSpeechEvent = FMODUnity.RuntimeManager
+                                           .CreateInstance(reactionToGoalSpeechEventRef);
+
+        // Create crowdReactionToGoalEvent
+        crowdReactionToGoalEvent = FMODUnity.RuntimeManager
+                                           .CreateInstance(crowdReactionToGoalEventRef);
+
         crowd = FMODUnity.RuntimeManager.CreateInstance(crowdEvent);
         crowd.start();
 
@@ -81,7 +107,14 @@ public class WorldController : MonoBehaviour {
 
     void GoalScored(string team)
     {
-        
+
+        // Crowd and speaker's reaction to goal are played
+        crowdReactionToGoalEvent.start();
+        crowdReactionToGoalEvent.release();
+
+        reactionToGoalSpeechEvent.start();
+        reactionToGoalSpeechEvent.release();
+
         if (team == "Red")
         {
             ++GameConstants.RedScore;

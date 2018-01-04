@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kickSound: event:/Shoot
   colisionSound: event:/Player_colision
-  footStep: event:/Run
+  greatPassSpeechEventRef: event:/Speakers/Speaker's Great Pass Reaction
   myRole: 0
   myTeamState: 0
   switchState: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   homeRegionAttack: 0
   previousAttack: 0
   amITheSupportingPlayer: 0
+  finish: 0
 --- !u!136 &136446572861084338
 CapsuleCollider:
   m_ObjectHideFlags: 1
