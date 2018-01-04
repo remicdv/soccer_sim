@@ -13,9 +13,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HasSourceProject: 1
   HasPlatforms: 1
+<<<<<<< HEAD
   sourceProjectPath: D:\Mes Documents\Mes Cours\Master_2\Son_Musique\soccer_sim\soccer_sim.fspro
   SourceProjectPathUnformatted: D:\Mes Documents\Mes Cours\Master_2\Son_Musique\soccer_sim\soccer_sim.fspro
   SourceBankPathUnformatted: D:\Mes Documents\Mes Cours\Master_2\Son_Musique\soccer_sim\Build
+=======
+  sourceProjectPath: C:\Users\Nairolf\Desktop\soccer_sim\soccer_sim.fspro
+  SourceProjectPathUnformatted: C:\Users\Nairolf\Desktop\soccer_sim\soccer_sim.fspro
+  SourceBankPathUnformatted: C:\Users\Nairolf\Desktop\soccer_sim\Build
+>>>>>>> 4091a7630e0ed58a9f4ef21606b49b255b74ffac
   AutomaticEventLoading: 1
   AutomaticSampleLoading: 0
   ImportType: 0

@@ -8,6 +8,9 @@ public class Dribbling : State<AI_Player>
     public bool dir;
     public bool tothegoal;
 
+	private float interval = 1.0f;
+	private float time = 2.5f;
+
     private Dribbling()
     {
         if (_instance != null)
@@ -76,6 +79,7 @@ public class Dribbling : State<AI_Player>
 
     public override void UpdateState(AI_Player _owner)
     {
+		time += Time.deltaTime;
 
         _owner.setTeamState(AI_Player.stateTeam.Attack);
         _owner.leader = true;
@@ -276,6 +280,23 @@ public class Dribbling : State<AI_Player>
                     _owner.kickDir *= 1.1f;
                     Debug.DrawRay(_owner.transform.position, _owner.kickDir, Color.black);
                     _owner.amIReceiver = false;
+
+					//Audio play
+
+					if (time > interval) {
+						FMOD.Studio.EventInstance shot = FMODUnity.RuntimeManager.CreateInstance (_owner.le_tir);
+						shot.start ();
+						shot.release ();
+
+						float rand = Random.Range (0, 100);
+						if (rand < 50) {
+							shot = FMODUnity.RuntimeManager.CreateInstance (_owner.near_miss);
+							shot.start ();
+							shot.release ();
+						}
+
+						time = 0.0f;
+					}
                     _owner.stateMachine.ChangeState(KickBall.Instance);
                 }
                 else
