@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WorldController : MonoBehaviour {
@@ -22,6 +23,7 @@ public class WorldController : MonoBehaviour {
     int seconds;
     public float whokickOff;
     int minuts;
+    GameObject menu_btn;
 
     [FMODUnity.EventRef]
     public string crowdEvent;
@@ -39,6 +41,9 @@ public class WorldController : MonoBehaviour {
     void Start () {
         crowd = FMODUnity.RuntimeManager.CreateInstance(crowdEvent);
         crowd.start();
+
+        menu_btn = GameObject.Find("Menu");
+        menu_btn.SetActive(false);
 
         player = GameObject.FindGameObjectsWithTag("RedTeam");
         player1 = GameObject.FindGameObjectsWithTag("BlueTeam");
@@ -144,12 +149,15 @@ public class WorldController : MonoBehaviour {
         if (start)
         {
             timer += Time.deltaTime;
-            if(timer == 300)
+            if(!end)
+            {
+                seconds = (int)timer % 60;
+                minuts = (int)System.Math.Ceiling(timer / 60 - 1);
+            }
+            if (minuts == 5)
             {
                 end = true;
             }
-            seconds = (int)timer%60;
-            minuts = (int)System.Math.Ceiling(timer / 60 - 1);
 
             timeText.text = "Time : " + minuts.ToString("00") + " : " + seconds.ToString("00");
         }
@@ -183,8 +191,39 @@ public class WorldController : MonoBehaviour {
 
         if (end)
         {
+            if (GameConstants.RedScore > GameConstants.BlueScore)
+                endCText.text = "Victoire des rouges !";
+            else if(GameConstants.RedScore < GameConstants.BlueScore)
+                endCText.text = "Victoire des bleues !";
+            else
+                endCText.text = "Match nul";
+
+            crowd.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            ball.GetComponent<Rigidbody>().velocity *= 0;
+            ball.transform.position = new Vector3(0f, 1.5f, 144f);
             endC.gameObject.SetActive(true);
-            Debug.Break();
+            menu_btn.SetActive(true);
+            foreach (GameObject p in player)
+            {
+                AI_Player a = p.GetComponent("AI_Player") as AI_Player;
+                if (a != null)
+                {
+                    a.finish = true;
+                    a.stateMachine.ChangeState(BeginState.Instance);
+                }
+
+            }
+
+            foreach (GameObject p in player1)
+            {
+                AI_Player a = p.GetComponent("AI_Player") as AI_Player;
+                if (a != null)
+                {
+                    a.finish = true;
+                    a.stateMachine.ChangeState(BeginState.Instance);
+                }
+
+            }
         }
         
 
@@ -318,4 +357,6 @@ public class WorldController : MonoBehaviour {
         }
         return t;
     }
+
+
 }

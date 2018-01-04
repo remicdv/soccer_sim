@@ -47,6 +47,7 @@ public class AI_Player : MonoBehaviour
     public int homeRegionAttack;
     public int previousAttack;
     public bool amITheSupportingPlayer;
+    public bool finish;
 
 
     public StateMachine<AI_Player> stateMachine { get; set; }
@@ -55,6 +56,7 @@ public class AI_Player : MonoBehaviour
     {
         
         ready = false;
+        finish = false;
         myRigidbody = GetComponent<Rigidbody>();
         fov = gameObject.GetComponent("FieldOfView") as FieldOfView;
         ball = GameObject.Find("Ball");
@@ -95,46 +97,9 @@ public class AI_Player : MonoBehaviour
     private void FixedUpdate()
     {
 
-       
-
-        /* if (leader && (GetComponent<Rigidbody>().velocity.x > 0 || GetComponent<Rigidbody>().velocity.y > 0))
-         {
-             FMOD.Studio.PLAYBACK_STATE playstate;
-             run.getPlaybackState(out playstate);
-             if (playstate == FMOD.Studio.PLAYBACK_STATE.STOPPED)
-             {
-                 Debug.Log("creation");
-                 run = FMODUnity.RuntimeManager.CreateInstance(footStep);
-                 run.start();
-             }
-         }
-         else
-         {
-             run.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-         }*/
-
         transform.position = new Vector3(transform.position.x, startPos.y, transform.position.z);
         stateMachine.Update();
 
-       /* if(GetLeader() != null && GetBU() != null && myTeamState == stateTeam.Attack)
-        {
-            
-            if (team == 1)
-            {
-                if (GetLeader().transform.position.z > GameConstants.centers[GetBU().GetComponent<AI_Player>().previousAttack].z)
-                    homeRegionAttack = homeRegion + 3;
-            }
-            else
-            {
-                if (GetLeader().transform.position.z < GameConstants.centers[GetBU().GetComponent<AI_Player>().previousAttack].z)
-                    homeRegionAttack = homeRegion - 3;
-            }
-        }
-        else
-        {
-            homeRegionAttack = previousAttack;
-        }*/
-        
            
     }
 
@@ -230,11 +195,11 @@ public class AI_Player : MonoBehaviour
         {
             if (g.transform != transform)
             {
-                if(Vector3.Distance(g.transform.position, transform.position) < dist)
+                if(g.name != "GoalKeaper_blue" && g.name != "GoalKeaper_red")
                 {
-                    dist = Vector3.Distance(g.transform.position, transform.position);
-                    if(canIPass(g))
+                    if (Vector3.Distance(g.transform.position, transform.position) < dist)
                     {
+                        dist = Vector3.Distance(g.transform.position, transform.position);
                         closest = g;
                     }
                 }
@@ -408,7 +373,6 @@ public class AI_Player : MonoBehaviour
         newRotation.z = 0f;
         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, 1);
         Debug.DrawRay(transform.position, transform.forward * 20f, Color.magenta);
-        //Debug.Break();
         Vector3 v = (enemyGoal.transform.position - transform.position).normalized;
         v = transform.position + transform.forward * 4f;
         ball.transform.position = new Vector3(v.x, ball.transform.position.y, v.z);
