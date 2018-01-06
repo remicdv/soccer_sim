@@ -210,10 +210,10 @@ public class Dribbling : State<AI_Player>
                     {
                         // Play a "C'est une belle passe" speech 1 time out of 4
                         float randomDraw = Random.Range(0, 100);
-                        if (randomDraw <= 25 && timerForGreatPassSpeech > timeIntervalBeetweenGreatPassSpeech)
+                        if (randomDraw <= 25 && time > interval)
                         {
                             _owner.greatPassSpeechEvent.start();
-                            timerForGreatPassSpeech = 0;
+                            time = 0;
                         } 
 
                         a.amIReceiver = true;

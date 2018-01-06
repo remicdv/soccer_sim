@@ -134,7 +134,6 @@ public class WorldController : MonoBehaviour {
         {
             ++GameConstants.RedScore;
             scoreText.text = "Score : " + GameConstants.RedScore + " - " + GameConstants.BlueScore;
-            GameObject.Find("Player").GetComponent<AI_Player>().homeRegion += 1;
 
             if (crowdExcitationRatio <= 0.85f)
                 crowdExcitationRatio += 0.15f;
@@ -143,7 +142,6 @@ public class WorldController : MonoBehaviour {
         {
             ++GameConstants.BlueScore;
             scoreText.text = "Score : " + GameConstants.RedScore + " - " + GameConstants.BlueScore;
-            GameObject.Find("Player (10)").GetComponent<AI_Player>().homeRegion -= 1;
 
             if (crowdExcitationRatio <= 0.85f)
                 crowdExcitationRatio += 0.15f;
@@ -155,8 +153,16 @@ public class WorldController : MonoBehaviour {
             AI_Player a = p.GetComponent("AI_Player") as AI_Player;
             if (a != null)
             {
-                p.transform.position = GameConstants.centers[a.homeRegion];
-                a.stateMachine.ChangeState(FirstState.Instance);
+                if (a != GameObject.Find("Player").GetComponent<AI_Player>())
+                {
+                    p.transform.position = GameConstants.centers[a.homeRegion];
+                    a.stateMachine.ChangeState(FirstState.Instance);
+                }
+                else
+                {
+                    p.transform.position = GameConstants.centers[a.homeRegion+1];
+                    a.stateMachine.ChangeState(FirstState.Instance);
+                }
             }
             p.GetComponent<Rigidbody>().velocity *= 0;
 
@@ -167,9 +173,17 @@ public class WorldController : MonoBehaviour {
             AI_Player a = p.GetComponent("AI_Player") as AI_Player;
             if (a != null)
             {
-                p.transform.position = GameConstants.centers[a.homeRegion];
-                a.stateMachine.ChangeState(FirstState.Instance);
-            }
+                if(a != GameObject.Find("Player (10)").GetComponent<AI_Player>())
+                { 
+                    p.transform.position = GameConstants.centers[a.homeRegion];
+                    a.stateMachine.ChangeState(FirstState.Instance);
+                }
+                else
+                {
+                    p.transform.position = GameConstants.centers[a.homeRegion - 1];
+                    a.stateMachine.ChangeState(FirstState.Instance);
+                }
+        }
             p.GetComponent<Rigidbody>().velocity *= 0;
 
         }

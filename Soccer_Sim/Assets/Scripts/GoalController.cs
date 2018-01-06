@@ -33,7 +33,7 @@ public class GoalController : MonoBehaviour {
         {
             Debug.Log("Red goal");
             world.SendMessage("GoalScored", "Red");
-            ball.transform.position = new Vector3(0, 1.5f, 0);
+            ball.transform.position = new Vector3(0, 4f, 0);
             ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         }
     }

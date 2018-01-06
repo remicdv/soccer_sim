@@ -32,7 +32,7 @@ MonoBehaviour:
   - {fileID: 114909594461219116}
   MasterBankRef: {fileID: 114856022385127734}
   StringsBankRef: {fileID: 114327660372044530}
-  stringsBankWriteTime: 636506887614317796
+  stringsBankWriteTime: 636507627651950445
   cacheVersion: 2
 --- !u!114 &114021871170428620
 MonoBehaviour:
@@ -112,7 +112,7 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 114369642124959344}
+  - {fileID: 114663381088672512}
   MinDistance: 0
   MaxDistance: 0
   Length: 204355
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: D:\Mes Documents\Mes Cours\Master_2\Son_Musique\soccer_sim\Build\Desktop\Master
     Bank.strings.bank
-  lastModified: 636506887614317796
+  lastModified: 636507627651950445
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -371,6 +371,21 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 470
+--- !u!114 &114663381088672512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CrowdExcitation
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &114744714176847406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,11 +480,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: D:\Mes Documents\Mes Cours\Master_2\Son_Musique\soccer_sim\Build\Desktop\Master
     Bank.bank
-  lastModified: 636506887614297774
+  lastModified: 636507627651884014
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 6021920
+    Value: 6023040
   Exists: 1
 --- !u!114 &114873247713707610
 MonoBehaviour:
